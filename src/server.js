@@ -10,7 +10,7 @@ app.set("views", __dirname + "/views");
 app.use('/public', express.static(__dirname + "/public"));
 app.get("/", (req, res) => res.render("start"));
 app.get("/meeting", (req, res) => res.render("meeting"));
-app.get("/waiting", (req, res) => res.render("waiting"));
+app.get("/privacyset", (req, res) => res.render("privacyset"));
 
 const httpServer = http.createServer(app);
 const wsServer = SocketIO(httpServer);
