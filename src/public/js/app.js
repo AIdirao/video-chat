@@ -1,13 +1,13 @@
 const socket = io();
 
 const myFace = document.getElementById("myFace");
+
 const muteBtn = document.getElementById("mute");
 const cameraBtn = document.getElementById("camera");
 const camerasSelect = document.getElementById("cameras");
 const call = document.getElementById("call");
 const welcome = document.getElementById("welcome");
 const nicknameForm = document.getElementById("nicknameForm");
-
 
 call.hidden = true; // 비디오 통화 화면 숨김
 nicknameForm.hidden = false;
@@ -16,7 +16,6 @@ let muted = false;
 let cameraoff = false;
 let roomName;
 let myPeerConnection;
-
 
 /* nickname form 관련 */
 async function handleWelcomeSubmit(event) {
