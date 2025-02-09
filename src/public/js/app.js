@@ -10,8 +10,7 @@ const nicknameForm = document.getElementById("nicknameForm");
 const enterRoomForm = document.getElementById("enterRoom");
 
 call.hidden = true; // 비디오 통화 화면 숨김
-enterRoomForm.hidden = true;
-
+nicknameForm.hidden = false;
 let myStream;
 let muted = false;
 let cameraoff = false;
@@ -80,30 +79,26 @@ cameraBtn.addEventListener("click", handleCameraClick);
 camerasSelect.addEventListener("change", handleCameraChange);
 
 async function initCall() {
-    call.hidden = false;
     await getMedia();
     makeConnection();
 }
 
 async function handleWelcomeSubmit(event) {
     event.preventDefault();
-    if (!nicknameForm.hidden) {
-        const nicknameInput = nicknameForm.querySelector("input");
-        nicknameForm.hidden = true;
-        enterRoomForm.hidden = false;
-    } else {
-        const roomInput = enterRoomForm.querySelector("input");
-        roomName = roomInput.value;
-        roomInput.value = "";
-        enterRoomForm.hidden = true;
+    const nicknameInput = nicknameForm.querySelector("input");
+
+    if (nicknameInput.value.trim() !== "") {
+        roomName = 'defaultRoom';
         call.hidden = false;
         await initCall();
         socket.emit("join_room", roomName);
+        nicknameForm.hidden = true;
+    } else {
+        alert("Please enter a nickname.");
     }
 }
 
 nicknameForm.addEventListener("submit", handleWelcomeSubmit);
-enterRoomForm.addEventListener("submit", handleWelcomeSubmit);
 
 socket.on("welcome", async () => {
     const offer = await myPeerConnection.createOffer();
@@ -128,6 +123,8 @@ socket.on("ice", ice => {
 
 function makeConnection() {
     myPeerConnection = new RTCPeerConnection();
+    myPeerConnection.addEventListener("icecandidate", handleIce); 
+    myPeerConnection.addEventListener("track", handleAddStream);
     myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
 }
 
@@ -139,8 +136,9 @@ function handleIce(event) {
 
 function handleAddStream(event) {
     const peerFace = document.getElementById("peerFace");
-    peerFace.srcObject = event.streams[0];
+    if(peerFace) {
+        peerFace.srcObject = event.streams[0];
+    } else {
+        console.error("PeerFace element not found");
+    }
 }
-
-myPeerConnection.addEventListener("icecandidate", handleIce);
-myPeerConnection.addEventListener("track", handleAddStream);

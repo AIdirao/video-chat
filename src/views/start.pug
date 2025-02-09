@@ -1,0 +1,33 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title AI-dira Start Page
+        link(rel="stylesheet", href="https://unpkg.com/mvp.css")
+    body
+        header
+            h1 AI-dira🌐
+        main
+            div.sidebar
+                form#optionsForm
+                    label(for="joinCam")
+                        input#joinCam(type="checkbox")
+                        | Join Cam
+                    label(for="privacyMode")
+                        input#privacyMode(type="checkbox")
+                        | Privacy Mode
+            div.content
+                div#smartJoin
+                    h2 스마트 회의 참가
+                    p AI 기반 모자이크 기술을 통해 회의 프라이버시를 안전하게 실시간으로 보호합니다.
+                    form#createMeetingForm
+                        input(type="text", placeholder="새 회의명 입력", name="roomName", required)
+                        button(type="submit") 새 회의 생성
+                    form#enterCodeForm
+                        input(type="text", placeholder="회의 코드 입력", name="roomID", required)
+                        button(type="submit") 코드로 회의 참가
+                div#visualContainer
+                    img(src="/images/welcome.png", alt="Welcome to AI-dira")
+        script(src="/socket.io/socket.io.js")
+        script(src="/public/js/start.js")    

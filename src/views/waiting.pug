@@ -1,0 +1,35 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Waiting Room Configuration
+        link(rel="stylesheet", href="https://unpkg.com/mvp.css")
+    body
+        header
+            h1 Waiting Room Settings
+
+        main
+            div#choosefacefilter
+                h3 얼굴 필터링
+                form#checkfiltering
+                    h4 설정한 얼굴만 화면에 노출됩니다.
+                    button 필터링 기능 설정 버튼
+                    h4 허용할 얼굴 사진 업로드 (최대 10명)
+                    h5 *최대한 정면을 바라보고 찍으세요
+                    button 업로드버튼
+            
+            div#recordSetting
+                h3 화면녹화 설정
+                form#checkrecording                    
+                    h4 내가 참여 중인 화면을 상대가 녹화할 수 없도록 설정합니다. 
+                    button 화면 녹화 방지 기능 버튼
+                    h5 상대방이 화면을 녹화할 수 없습니다.
+
+            div#join
+                form#joincam
+                button(id="joinMeetingButton") 회의 참가
+                button(id="goToMainButton") 메인 화면으로 가기
+    script(src="/socket.io/socket.io.js")
+    script(src="/public/js/waiting.js")
+    script(src="/public/js/app.js")
