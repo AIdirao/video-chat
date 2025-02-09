@@ -7,7 +7,7 @@ const camerasSelect = document.getElementById("cameras");
 const call = document.getElementById("call");
 const welcome = document.getElementById("welcome");
 const nicknameForm = document.getElementById("nicknameForm");
-const enterRoomForm = document.getElementById("enterRoom");
+
 
 call.hidden = true; // 비디오 통화 화면 숨김
 nicknameForm.hidden = false;
@@ -17,6 +17,28 @@ let cameraoff = false;
 let roomName;
 let myPeerConnection;
 
+
+/* nickname form 관련 */
+async function handleWelcomeSubmit(event) {
+    event.preventDefault();
+    const nicknameInput = nicknameForm.querySelector("input");
+
+    if (nicknameInput.value.trim() !== "") {
+        roomName = 'defaultRoom';
+        call.hidden = false;
+        await initCall();
+        socket.emit("join_room", roomName);
+        nicknameForm.hidden = true;
+    } else {
+        alert("Please enter a nickname.");
+    }
+}
+
+nicknameForm.addEventListener("submit", handleWelcomeSubmit);
+/* nickname form 관련 */
+
+
+/* 화상 회의 */
 async function getCameras() {
     try {
         const devices = await navigator.mediaDevices.enumerateDevices();
@@ -83,22 +105,7 @@ async function initCall() {
     makeConnection();
 }
 
-async function handleWelcomeSubmit(event) {
-    event.preventDefault();
-    const nicknameInput = nicknameForm.querySelector("input");
 
-    if (nicknameInput.value.trim() !== "") {
-        roomName = 'defaultRoom';
-        call.hidden = false;
-        await initCall();
-        socket.emit("join_room", roomName);
-        nicknameForm.hidden = true;
-    } else {
-        alert("Please enter a nickname.");
-    }
-}
-
-nicknameForm.addEventListener("submit", handleWelcomeSubmit);
 
 socket.on("welcome", async () => {
     const offer = await myPeerConnection.createOffer();
