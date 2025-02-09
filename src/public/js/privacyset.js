@@ -1,3 +1,3 @@
-document.getElementById('joinMeetingButton').addEventListener('click', function() {
-    window.location.href = '/meeting';
+document.getElementById('waitingroomBtn').addEventListener('click', function() {
+    window.location.href = '/waiting';
 });

@@ -100,11 +100,12 @@ muteBtn.addEventListener("click", handleMuteClick);
 cameraBtn.addEventListener("click", handleCameraClick);
 camerasSelect.addEventListener("change", handleCameraChange);
 
+
+
 async function initCall() {
     await getMedia();
     makeConnection();
 }
-
 
 
 socket.on("welcome", async () => {
