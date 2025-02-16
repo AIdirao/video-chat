@@ -2,6 +2,14 @@ const socket = io();
 
 const createMeetingForm = document.getElementById("createMeetingForm");
 const enterCodeForm = document.getElementById("enterCodeForm");
+// const joincambtn = document.getElementById("joinCamBtn");
+// const privacymodebtn = document.getElementById("privacyModeBtn");
+
+
+document.getElementById('privacyModeBtn').addEventListener('click', function() {
+    window.location.href = '/privacyset';
+});
+
 
 createMeetingForm.addEventListener("submit", event => {
     event.preventDefault();

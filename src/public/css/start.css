@@ -1,0 +1,74 @@
+/* 전체 페이지 컨테이너 스타일 */
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column; /* 방향을 컬럼으로 변경 */
+}
+
+/* 사이드바 스타일 */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 15vw; /* 사이드바 너비를 전체 화면의 15%로 설정 */
+    height: 100vh; /* 전체 높이 */
+    background-color: #f4f4f4; /* 배경색 */
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* 그림자 효과 */
+    padding: 1em; /* 안쪽 여백 */
+    position: fixed;/* 사이드바 고정 */
+    left: 0;
+    top: 0;
+}
+
+/* 메인 컨텐츠 영역 스타일 */
+.content {
+    margin-left: 15vw; /* 사이드바 너비만큼 왼쪽 여백 */
+    flex-grow: 1; /* 남은 공간 모두 차지 */
+    padding: 10px; /* 컨텐츠의 안쪽 여백 */
+    width: 85vw; /* 전체 너비에서 사이드바 너비를 뺀 나머지 너비 */
+}
+
+/* 헤더 스타일링 */
+header {
+    width: 100%;
+    padding: 1em;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: fixed;
+    z-index: 1000;
+}
+
+/* 버튼 스타일 */
+button {
+    display: block;
+    margin: 10px 0;
+    padding: 10px 20px;
+}
+
+/* 기타 스타일 */
+h2, h1, p {
+    margin: 10px 0;
+    text-align: center; 
+}
+
+/* 반응형 미디어 쿼리 */
+@media (max-width: 600px) {
+    .sidebar, .content {
+        flex: 1; /* 사이드바와 컨텐츠가 화면의 50%씩 차지 */
+        width: 100%; /* 모바일 화면에서는 전체 너비 사용 */
+        position: relative; /* 고정 위치 해제 */
+    }
+    .content {
+        margin-left: 0; /* 사이드바 너비 제거 */
+    }
+}
+
+@media (min-width: 601px) {
+    .sidebar {
+        flex: 1 15vw; /* 데스크톱에서는 사이드바가 화면의 15% 차지 */
+    }
+    .content {
+        flex: 1 0 85%; /* 데스크톱에서는 컨텐츠가 나머지 85% 차지 */
+    }
+}
