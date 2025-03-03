@@ -325,11 +325,218 @@ async function applyVirtualBackground() {
     });
 }
 
-
-
 // applyVirtualBackground() 실행
 console.log("applyVirtualBackground() 호출됨");
 applyVirtualBackground();
+
+
+/* Nudity_Checker */
+
+// const nsfwCanvas = document.createElement("canvas");
+// const nsfwCtx = nsfwCanvas.getContext("2d");
+
+// nsfwCanvas.width = myFace.width;
+// nsfwCanvas.height = myFace.height;
+
+// myFace.insertAdjacentElement("afterend", nsfwCanvas);
+// console.log("nsfwCanvas 생성됨", nsfwCanvas);
+
+// // document.body.appendChild(nsfwCanvas)
+// // nsfwCanvas.style.display = "none";
+
+// let frameCount = 0;
+// const frameSkip = 10;
+
+// // Nudity Check 서버로 frame 전송 
+// async function sendFrameToServer() {
+//     frameCount++;
+//     if(frameCount % frameSkip !== 0){
+//         requestAnimationFrame(sendFrameToServer);
+//     }
+    
+//     nsfwCtx.drawImage(myFace, 0, 0, nsfwCanvas.width, nsfwCanvas.height);
+    
+//     let frame = nsfwCanvas.toDataURL("image/jpeg"); // 프레임을 Base64로 변환
+
+//     try {
+//         let response = await fetch("http://172.20.10.11:5000/check_nudity", {
+//             method: "POST",
+//             headers: { "Content-Type": "application/json" },
+//             body: JSON.stringify({ image: frame })
+//         });
+
+//         let result = await response.json();
+//         if(result.mosaic_img){
+//             updateMosaic(result.mosaic_img);
+//         }
+
+//     } catch (error) {
+//         console.error("Nudity check API 호출 실패:", error);
+
+//     }
+
+//     requestAnimationFrame(sendFrameToServer);
+
+// }
+
+// // base64 이미지를 canvas에 업데이트 
+// function updateMosaic(mosaicImageBase64) {
+//     let mosaicImg = new Image();
+//     mosaicImg.src = mosaicImageBase64;
+//     mosaicImg.onload = () => {
+//         nsfwCtx.clearRect(0, 0, nsfwCanvas.width, nsfwCanvas.height);
+//         nsfwCtx.drawImage(mosaicImg, 0, 0, nsfwCanvas.width, nsfwCanvas.height);
+//         console.log("모자이크 업데이트 완료");
+//     };
+// }
+
+// // 비디오 재생 시 모자이크 적용 시작
+// myFace.addEventListener("loadedmetadata", () => {
+//     console.log("비디오 재생 감지됨, NSFW 필터링 시작");
+//     sendFrameToServer();
+// });
+
+
+/*  Nudity_Checker */
+const nsfwCanvas = document.createElement("canvas");
+const nsfwCtx = nsfwCanvas.getContext("2d");
+let nsfwModel = null; // NSFW 모델 변수
+let nsfwCheckRunning = false; // NSFW 감지 루프 실행 여부
+
+document.body.append(nsfwCanvas);
+
+const nsfwBoundingCanvas = document.createElement("canvas");
+const nsfwBoundingCtx = nsfwBoundingCanvas.getContext("2d");
+document.body.appendChild(nsfwBoundingCanvas);
+
+// 비디오 요소 크기 동기화
+myFace.addEventListener("loadedmetadata", () => {
+    nsfwCanvas.width = myFace.videoWidth;
+    nsfwCanvas.height = myFace.videoHeight;
+
+    nsfwBoundingCanvas.width = nsfwCanvas.width;
+    nsfwBoundingCanvas.height = nsfwCanvas.height;
+
+    console.log("✅ NSFW Canvas 크기 설정 완료:", nsfwCanvas.width, nsfwCanvas.height);
+    console.log("✅ Bounding Box Canvas 크기 설정 완료:", nsfwBoundingCanvas.width, nsfwBoundingCanvas.height);
+    // NSFW 캔버스 스타일 적용
+    nsfwCanvas.style.position = 'relative'; // 부모 기준 위치 설정
+    nsfwCanvas.style.display = 'block';
+
+    // NSFW Bounding Canvas를 NSFW 캔버스 위에 겹치도록 설정
+    nsfwBoundingCanvas.style.position = 'absolute'; // 부모를 기준으로 정확히 덮음
+    nsfwBoundingCanvas.style.top = '0';
+    nsfwBoundingCanvas.style.left = '0';
+    nsfwBoundingCanvas.style.width = '100%';
+    nsfwBoundingCanvas.style.height = '100%';
+    nsfwBoundingCanvas.style.pointerEvents = 'none'; // 클릭 방지
+    nsfwBoundingCanvas.style.zIndex = '10'; // nsfwCanvas 위에 배치
+
+    // NSFW 캔버스와 Bounding 캔버스를 포함하는 컨테이너 생성
+    const nsfwContainer = document.createElement('div');
+    nsfwContainer.style.position = 'relative'; // 부모 기준 위치
+    nsfwContainer.style.width = nsfwCanvas.width + 'px';
+    nsfwContainer.style.height = nsfwCanvas.height + 'px';
+    nsfwContainer.style.display = 'inline-block'; // 블록 레벨 정렬 유지
+
+    // 부모 요소에 추가 (기존 위치 유지)
+    const myFaceParent = myFace.parentElement;
+    myFaceParent.appendChild(nsfwContainer);
+
+    // 카메라와 NSFW 감지 캔버스를 나란히 배치 (myFace와 nsfwContainer)
+    const containerWrapper = document.createElement('div');
+    containerWrapper.style.display = 'flex'; // 가로 정렬
+    containerWrapper.style.alignItems = 'center';
+    containerWrapper.style.gap = '10px';
+
+    containerWrapper.appendChild(myFace);  // 기존 카메라 유지
+    containerWrapper.appendChild(nsfwContainer);
+    myFaceParent.appendChild(containerWrapper);
+
+    // NSFW 캔버스를 컨테이너에 추가
+    nsfwContainer.appendChild(nsfwCanvas);
+    nsfwContainer.appendChild(nsfwBoundingCanvas);
+
+
+});
+
+
+/* ✅ NSFW 감지 함수 */
+const nsfwCategories = ["porn", "sexy", "hentai"];
+const nsfwThresholds = { 
+    //porn: 0.4, 
+    sexy: 0.1,
+    hentai: 0.3,  
+};
+
+/* ✅ 감지된 경우 화면 전체를 반투명 검정으로 덮음 */
+function coverNudity(ctx) {
+    ctx.fillStyle = 'rgba(0, 0, 0, 1)'; // 반투명 검정
+    ctx.fillRect(0, 0, nsfwBoundingCanvas.width, nsfwBoundingCanvas.height);
+}
+
+/* ✅ NSFW.js 모델 로드 */
+async function loadNSFWModel() {
+    try {
+        const modelPath = "http://localhost:3000/models/model.json"; 
+        nsfwModel = await nsfwjs.load(modelPath, { size: 299 }); 
+        console.log("✅ NSFW.js 모델 로드 완료");
+    } catch (error) {
+        console.error("❌ NSFW.js 모델 로드 실패:", error);
+    }
+}
+
+async function analyzeNSFWFrame() {
+    if (!nsfwModel) {
+        console.warn("🚨 NSFW 모델이 없음! 감지 불가.");
+        return;
+    }
+
+    nsfwCtx.drawImage(myFace, 0, 0, nsfwCanvas.width, nsfwCanvas.height);
+    const predictions = await nsfwModel.classify(nsfwCanvas);
+    console.log("🔍 NSFW 예측 결과:", predictions);
+
+    let isExplicit = false;
+
+    for (const pred of predictions) {
+        const category = pred.className.toLowerCase();
+        if (nsfwCategories.includes(category) && pred.probability > nsfwThresholds[category]) {
+            console.warn(`🚨 NSFW 감지됨! [${category}] 확률: ${pred.probability}`);
+            isExplicit = true;
+        }
+    }
+
+    if (isExplicit) {
+        nsfwBoundingCtx.clearRect(0, 0, nsfwBoundingCanvas.width, nsfwBoundingCanvas.height);
+        coverNudity(nsfwBoundingCtx); // 화면 전체 덮기
+    } else {
+        nsfwBoundingCtx.clearRect(0, 0, nsfwBoundingCanvas.width, nsfwBoundingCanvas.height);
+    }
+
+    if (nsfwCheckRunning) {
+        requestAnimationFrame(analyzeNSFWFrame);
+        console.log(" 계속 탐지 진행 중....");
+    }
+}
+
+/* ✅ NSFW 감지 시작 */
+async function startNSFWCheck() {
+    try {
+        await loadNSFWModel();
+        if (!nsfwModel) return;
+
+        nsfwCheckRunning = true;
+        analyzeNSFWFrame();
+    } catch (error) {
+        console.error("❌ NSFW 감지 시스템 초기화 실패:", error);
+    }
+}
+
+window.addEventListener("load", startNSFWCheck);
+
+
+
+
 
 //얼굴 감지를 위한 별도의 캔버스 (얼굴 박스만 표시)
 const faceCanvas = document.createElement("canvas");

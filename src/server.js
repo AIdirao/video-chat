@@ -1,18 +1,25 @@
 import http from "http";
 import SocketIO from "socket.io";
 import express from "express";
+import path from "path";
 import { instrument } from "@socket.io/admin-ui";
 
 const app = express();
 
+// pug 설정
 app.set('view engine', "pug");
 app.set("views", __dirname + "/views");
-app.use('/public', express.static(__dirname + "/public"));
+// 정적 파일 제공
+app.use("/public", express.static(path.resolve(__dirname, "public")));
+app.use("/models", express.static(path.resolve(__dirname, "public/models")));
+
+// 라우팅 설정
 app.get("/", (req, res) => res.render("start"));
 app.get("/meeting", (req, res) => res.render("meeting"));
 app.get("/privacyset", (req, res) => res.render("privacyset"));
 app.get("/waiting", (req, res) => res.render("waiting"));
 
+// http & websocket 서버 생성
 const httpServer = http.createServer(app);
 const wsServer = SocketIO(httpServer);
 
