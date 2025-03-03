@@ -23,6 +23,7 @@ app.set("views", __dirname + "/views");
 // 정적 파일 제공
 app.use("/public", express.static(path.resolve(__dirname, "public")));
 app.use("/models", express.static(path.resolve(__dirname, "public/models")));
+app.use("/nsfw_model", express.static(path.resolve(__dirname, "public/nsfw_model")));
 
 // 라우팅 설정
 app.get("/", (req, res) => res.render("start"));
