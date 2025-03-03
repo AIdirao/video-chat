@@ -267,12 +267,12 @@ async function applyVirtualBackground() {
 
     // 비디오 크기를 캔버스에 설정
     function setCanvasSize() {
-        videoCanvas.width = myFace.clientWidth;
-        videoCanvas.height = myFace.clientHeight;
+        videoCanvas.width = myFace.videoWidth;
+        videoCanvas.height = myFace.videoHeight;
         console.log("캔버스 크기 설정 완료:", videoCanvas.width, videoCanvas.height);
     }
 
-    //myFace.style.display = "none";
+    myFace.style.display = "none";
     //myFace.hidden = true
     
     // 둘이 화면 크기 맞추기 실행
