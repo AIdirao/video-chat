@@ -1,14 +1,15 @@
-
-
 const myFace = document.getElementById("myFace");
 const muteBtn = document.getElementById("mute");
 const cameraBtn = document.getElementById("camera");
 const camerasSelect = document.getElementById("cameras");
 const call = document.getElementById("call");
+const backgroundBtn = document.getElementById("background");
+
 
 let myStream;
 let muted = false;
 let cameraoff = false;
+let isBackgroundEnabled = true; 
 
 /* 세션 유지 */
 window.addEventListener("DOMContentLoaded", () => {
@@ -105,6 +106,20 @@ document.getElementById('enterMeeting').addEventListener('click', function() {
 });
 
 /* MediaPipe Selfie Segmentation (가상 배경 적용) */
+backgroundBtn.addEventListener("click", () => {
+    isBackgroundEnabled = !isBackgroundEnabled; // 상태 변경
+    backgroundBtn.innerText = isBackgroundEnabled ? "Background Off" : "Background On";
+    
+    console.log("가상 배경 상태:", isBackgroundEnabled ? "ON" : "OFF");
+
+    // 캔버스 즉시 업데이트
+    videoCtx.clearRect(0, 0, videoCanvas.width, videoCanvas.height);
+
+    if (!isBackgroundEnabled) {
+        // 가상 배경 OFF → 원본 비디오만 표시
+        videoCtx.drawImage(myFace, 0, 0, videoCanvas.width, videoCanvas.height);
+    }
+});
 
 //selfieSegmentation을 window에서 가져옴
 async function loadSelfieSegmentation() {
@@ -258,39 +273,11 @@ async function applyVirtualBackground() {
     }
 
     //myFace.style.display = "none";
+    //myFace.hidden = true
     
+    // 둘이 화면 크기 맞추기 실행
     myFace.addEventListener("loadedmetadata", setCanvasSize);
-    window.addEventListener("resize", setCanvasSize);
-
-    
-
-    selfieSegmentation.onResults((results) => {
-        if (!results.segmentationMask) {
-            console.warn("segmentationMask가 없음");
-            return;
-        }
-
-        videoCtx.clearRect(0, 0, videoCanvas.width, videoCanvas.height);
-
-        // 비디오 프레임을 캔버스에 좌우 반전하여 그리기
-        videoCtx.save();
-        videoCtx.translate(videoCanvas.width, 0);
-        videoCtx.scale(-1, 1);
-        videoCtx.drawImage(myFace, 0, 0, videoCanvas.width, videoCanvas.height);
-        videoCtx.restore();
-
-        // Segmentation Mask 적용
-        videoCtx.save();
-        videoCtx.translate(videoCanvas.width, 0);
-        videoCtx.scale(-1, 1);
-        videoCtx.globalCompositeOperation = "destination-in";
-        videoCtx.drawImage(results.segmentationMask, 0, 0, videoCanvas.width, videoCanvas.height);
-        videoCtx.restore();
-
-        // 가상 배경 적용
-        videoCtx.globalCompositeOperation = "destination-over";
-        videoCtx.drawImage(backgroundImg, 0, 0, videoCanvas.width, videoCanvas.height);
-    });
+    window.addEventListener("resize", setCanvasSize);    
 
     let isProcessing = false;
 
@@ -328,9 +315,54 @@ async function applyVirtualBackground() {
 
     myFace.addEventListener("play", () => {
         console.log("비디오 재생 감지됨, 가상 배경 적용 시작");
-        processVideo();
-        drawFaceBoxes();
+        processVideo(); //비디오 전송
+        drawFaceBoxes(); //face 인식
     });
+
+
+    selfieSegmentation.onResults((results) => {
+        if (!results.segmentationMask) {
+            console.warn("segmentationMask가 없음");
+            return;
+        }
+    
+        // 캔버스 초기화
+        videoCtx.clearRect(0, 0, videoCanvas.width, videoCanvas.height);
+    
+        if (!isBackgroundEnabled) {
+            // 배경 OFF일 때 원본 비디오만 표시
+            videoCtx.save();
+            videoCtx.translate(videoCanvas.width, 0);
+            videoCtx.scale(-1, 1);
+            videoCtx.drawImage(myFace, 0, 0, videoCanvas.width, videoCanvas.height);
+            videoCtx.restore();
+            return;  // 이후 배경 적용 코드 실행 안 함
+        }
+    
+        // 가상 배경 적용 (ON 상태일 때만 실행)
+        videoCtx.save();
+        videoCtx.translate(videoCanvas.width, 0);
+        videoCtx.scale(-1, 1);
+        videoCtx.drawImage(myFace, 0, 0, videoCanvas.width, videoCanvas.height);
+        videoCtx.restore();
+    
+        // Segmentation Mask 적용
+        videoCtx.save();
+        videoCtx.translate(videoCanvas.width, 0);
+        videoCtx.scale(-1, 1);
+        videoCtx.globalCompositeOperation = "destination-in";
+        videoCtx.drawImage(results.segmentationMask, 0, 0, videoCanvas.width, videoCanvas.height);
+        videoCtx.restore();
+    
+        // 가상 배경 적용 (isBackgroundEnabled === true일 때만 실행)
+        if (isBackgroundEnabled) {
+            videoCtx.globalCompositeOperation = "destination-over";
+            videoCtx.drawImage(backgroundImg, 0, 0, videoCanvas.width, videoCanvas.height);
+        }
+    });
+    
+
+
 
     // WebGL 컨텍스트 손실 감지 및 복구
     videoCanvas.addEventListener("webglcontextlost", (event) => {
@@ -346,6 +378,93 @@ async function applyVirtualBackground() {
 console.log("applyVirtualBackground() 호출됨");
 applyVirtualBackground();
 
+
+
+
+//얼굴 감지를 위한 별도의 캔버스 (얼굴 박스만 표시)
+const faceCanvas = document.createElement("canvas");
+const faceCtx = faceCanvas.getContext("2d");
+document.body.appendChild(faceCanvas);
+
+
+async function loadReferenceImage() {
+    const img = await faceapi.fetchImage('/public/myFace.jpg');
+    const detection = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
+
+    if (!detection) {
+        console.error("참조 이미지에서 얼굴을 감지할 수 없습니다.");
+        return null;
+    }
+
+    // FaceMatcher에 유사도 측정
+    return new faceapi.FaceMatcher(detection, 0.45);  // 기본값 0.6 
+}
+
+async function drawFaceBoxes() {
+    const faceMatcher = await loadReferenceImage();
+    if (!faceMatcher) {
+        console.error("FaceMatcher를 로드할 수 없습니다.");
+        return;
+    }
+
+    const canvas = faceapi.createCanvasFromMedia(myFace);
+    videoCanvas.parentElement.appendChild(canvas);
+    canvas.style.position = "absolute";
+    canvas.style.top = videoCanvas.offsetTop + "px";
+    canvas.style.left = videoCanvas.offsetLeft + "px";
+    canvas.width = videoCanvas.width;
+    canvas.height = videoCanvas.height;
+    const displaySize = { width: videoCanvas.width, height: videoCanvas.height };
+    faceapi.matchDimensions(canvas, displaySize);
+
+    async function detectFaces() {
+        const detections = await faceapi.detectAllFaces(myFace)
+            .withFaceLandmarks()
+            .withFaceDescriptors();
+
+        const resizedDetections = faceapi.resizeResults(detections, displaySize);
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        resizedDetections.forEach(detection => {
+            const box = detection.detection.box;
+
+            // 좌우 반전 처리
+            const reversedX = canvas.width - (box.x + box.width); // x 좌표 반전
+            const reversedBox = {
+                x: reversedX,
+                y: box.y,
+                width: box.width,
+                height: box.height
+            };
+
+            const bestMatch = faceMatcher.findBestMatch(detection.descriptor);
+            const isMatch = bestMatch.label === "unknown" ? false : true;
+
+            // ctx.strokeStyle = "black";
+            // ctx.lineWidth = 3;
+            // ctx.fillStyle = 'blue'; 
+            // ctx.fillRect(reversedBox.x, reversedBox.y,reversedBox.width, reversedBox.height);
+            // ctx.strokeRect(reversedBox.x, reversedBox.y, reversedBox.width, reversedBox.height); 
+
+            if (!isMatch) {
+                // ctx.fillStyle = "red";
+                // ctx.font = "20px Arial";
+                // ctx.fillText("True", reversedBox.x, reversedBox.y - 10); // 반전된 위치에 텍스트 표시
+
+                //ctx.strokeStyle = "black";
+                //ctx.lineWidth = 3;
+                ctx.fillStyle = 'white';
+                ctx.fillRect(reversedBox.x, reversedBox.y, reversedBox.width, reversedBox.height);
+                
+            }
+        });
+
+        requestAnimationFrame(detectFaces);
+    }
+
+    detectFaces();
+}
 
 /* Nudity_Checker */
 
@@ -552,90 +671,3 @@ async function startNSFWCheck() {
 window.addEventListener("load", startNSFWCheck);
 
 
-
-
-
-//얼굴 감지를 위한 별도의 캔버스 (얼굴 박스만 표시)
-const faceCanvas = document.createElement("canvas");
-const faceCtx = faceCanvas.getContext("2d");
-document.body.appendChild(faceCanvas);
-
-
-async function loadReferenceImage() {
-    const img = await faceapi.fetchImage('/public/myFace.jpg');
-    const detection = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
-
-    if (!detection) {
-        console.error("참조 이미지에서 얼굴을 감지할 수 없습니다.");
-        return null;
-    }
-
-    // FaceMatcher에 유사도 측정
-    return new faceapi.FaceMatcher(detection, 0.45);  // 기본값 0.6 
-}
-
-async function drawFaceBoxes() {
-    const faceMatcher = await loadReferenceImage();
-    if (!faceMatcher) {
-        console.error("FaceMatcher를 로드할 수 없습니다.");
-        return;
-    }
-
-    const canvas = faceapi.createCanvasFromMedia(myFace);
-    videoCanvas.parentElement.appendChild(canvas);
-    canvas.style.position = "absolute";
-    canvas.style.top = videoCanvas.offsetTop + "px";
-    canvas.style.left = videoCanvas.offsetLeft + "px";
-    canvas.width = videoCanvas.width;
-    canvas.height = videoCanvas.height;
-    const displaySize = { width: videoCanvas.width, height: videoCanvas.height };
-    faceapi.matchDimensions(canvas, displaySize);
-
-    async function detectFaces() {
-        const detections = await faceapi.detectAllFaces(myFace)
-            .withFaceLandmarks()
-            .withFaceDescriptors();
-
-        const resizedDetections = faceapi.resizeResults(detections, displaySize);
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        resizedDetections.forEach(detection => {
-            const box = detection.detection.box;
-
-            // 좌우 반전 처리
-            const reversedX = canvas.width - (box.x + box.width); // x 좌표 반전
-            const reversedBox = {
-                x: reversedX,
-                y: box.y,
-                width: box.width,
-                height: box.height
-            };
-
-            const bestMatch = faceMatcher.findBestMatch(detection.descriptor);
-            const isMatch = bestMatch.label === "unknown" ? false : true;
-
-            // ctx.strokeStyle = "black";
-            // ctx.lineWidth = 3;
-            // ctx.fillStyle = 'blue'; 
-            // ctx.fillRect(reversedBox.x, reversedBox.y,reversedBox.width, reversedBox.height);
-            // ctx.strokeRect(reversedBox.x, reversedBox.y, reversedBox.width, reversedBox.height); 
-
-            if (!isMatch) {
-                // ctx.fillStyle = "red";
-                // ctx.font = "20px Arial";
-                // ctx.fillText("True", reversedBox.x, reversedBox.y - 10); // 반전된 위치에 텍스트 표시
-
-                //ctx.strokeStyle = "black";
-                //ctx.lineWidth = 3;
-                ctx.fillStyle = 'white';
-                ctx.fillRect(reversedBox.x, reversedBox.y, reversedBox.width, reversedBox.height);
-                
-            }
-        });
-
-        requestAnimationFrame(detectFaces);
-    }
-
-    detectFaces();
-}
