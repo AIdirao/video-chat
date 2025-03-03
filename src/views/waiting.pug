@@ -5,6 +5,7 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title WaitingRoom
         link(rel="stylesheet", href="https://unpkg.com/mvp.css")
+
     body
         header
             h1 Ai-dirao
@@ -17,7 +18,10 @@ html(lang="en")
                     select#cameras
                 video#peerFace(autoplay, playsinline, width="400", height="400")
             button(id="enterMeeting") 회의 참가
-        script(src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js")
-        script(src="/socket.io/socket.io.js")
-        script(src="/public/js/waiting.js")
-    
+
+        // ✅ `defer`를 사용하여 모든 스크립트가 실행되기 전에 다운로드되도록 함
+        //script(src="/public/js/libs/nsfwjs.js", defer)
+        script(src="https://unpkg.com/nsfwjs", defer)
+        script(src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js", defer)
+        script(src="/socket.io/socket.io.js", defer)
+        script(src="/public/js/waiting.js", defer)
