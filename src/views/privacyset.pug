@@ -3,21 +3,30 @@ html(lang="en")
     head
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title Waiting Room Configuration
-        link(rel="stylesheet", href="https://unpkg.com/mvp.css")
+        title Privacy Setting Room
+        //link(rel="stylesheet", href="https://unpkg.com/mvp.css")
+        link(rel="stylesheet", href="/public/css/start.css")
     body
         header
-            h1 Waiting Room Settings
+            h1 Privacy Setting Room
 
         main
             div#choosefacefilter
                 h3 얼굴 필터링
                 form#checkfiltering
                     h4 설정한 얼굴만 화면에 노출됩니다.
-                    button 필터링 기능 설정 버튼
+                    button.toggle-container
+                        span 필터링 기능 설정
+                        label.switch(for="filterToggle") 
+                            input(type="checkbox" id="filterToggle")
+                            span.slider
+                    
+                    
                     h4 허용할 얼굴 사진 업로드 (최대 10명)
                     h5 *최대한 정면을 바라보고 찍으세요
-                    button 업로드버튼
+                    input(type="file" id="faceUpload" accept="image/*" multiple) 
+                    button(id = "faceuploadinitializate") 업로드 사진 초기화
+                    div#previewContainer
             
             div#recordSetting
                 h3 화면녹화 설정
@@ -27,7 +36,6 @@ html(lang="en")
                     h5 상대방이 화면을 녹화할 수 없습니다.
 
             div#join
-                form#joincam
                 button(id="waitingroomBtn") 회의 참가
                 button(id="goToMainButton") 메인 화면으로 가기
     script(src="/socket.io/socket.io.js")

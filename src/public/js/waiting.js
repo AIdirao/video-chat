@@ -1,3 +1,5 @@
+
+
 const myFace = document.getElementById("myFace");
 const muteBtn = document.getElementById("mute");
 const cameraBtn = document.getElementById("camera");
@@ -7,6 +9,21 @@ const call = document.getElementById("call");
 let myStream;
 let muted = false;
 let cameraoff = false;
+
+/* 세션 유지 */
+window.addEventListener("DOMContentLoaded", () => {
+    const storedRoomID = sessionStorage.getItem("roomID");
+    const storedRoomName = sessionStorage.getItem("roomName");
+
+    if (storedRoomID && storedRoomName) {
+        console.log(`[CLIENT] Waiting Room: ${storedRoomName} (Room ID: ${storedRoomID})`);
+    } else {
+        console.log("❌ No meeting information found.");
+        window.location.href = "/";
+    }
+});
+
+
 
 
 // 모델 로드를 끝 마치면 startVideo 함수 실행 
@@ -64,13 +81,13 @@ async function getMedia(deviceID) {
 
 function handleMuteClick() {
     myStream.getAudioTracks().forEach(track => track.enabled = !track.enabled);
-    muteBtn.innerText = muted ? "Unmute" : "Mute";
+    muteBtn.innerText = muted ? "Mute" : "Unmute";
     muted = !muted;
 }
 
 function handleCameraClick() {
     myStream.getVideoTracks().forEach(track => track.enabled = !track.enabled);
-    cameraBtn.innerText = cameraoff ? "Turn Camera On" : "Turn Camera Off";
+    cameraBtn.innerText = cameraoff ? "Turn Camera Off" : "Turn Camera On";
     cameraoff = !cameraoff;
 }
 

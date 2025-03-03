@@ -1,48 +1,52 @@
-const socket = io();
+import socket from "./socket.js"; 
 
 const myFace = document.getElementById("myFace");
-
 const muteBtn = document.getElementById("mute");
 const cameraBtn = document.getElementById("camera");
 const camerasSelect = document.getElementById("cameras");
 const call = document.getElementById("call");
 const welcome = document.getElementById("welcome");
 const nicknameForm = document.getElementById("nicknameForm");
+const meetingCodeDisplay = document.getElementById("meetingCodeDisplay");
+const nicknameDisplay = document.getElementById("nickname");
 
-call.hidden = true; // 비디오 통화 화면 숨김
+call.hidden = true; 
 nicknameForm.hidden = false;
 let myStream;
 let muted = false;
 let cameraoff = false;
-let roomName;
+let roomID;
 let myPeerConnection;
+let myNickname;
+let roomName;
 
-/* nickname form 관련 */
-async function handleWelcomeSubmit(event) {
-    event.preventDefault();
-    const nicknameInput = nicknameForm.querySelector("input");
-
-    if (nicknameInput.value.trim() !== "") {
-        roomName = 'defaultRoom';
-        call.hidden = false;
-        await initCall();
-        socket.emit("join_room", roomName);
-        nicknameForm.hidden = true;
+// 세션에서 방 정보 및 닉네임 가져오기
+window.addEventListener("DOMContentLoaded", () => {
+    roomID = sessionStorage.getItem("roomID");
+    roomName = sessionStorage.getItem("roomName"); 
+    if (roomID) {
+        meetingCodeDisplay.innerText = `회의 코드: ${roomID}`;
     } else {
-        alert("Please enter a nickname.");
+        meetingCodeDisplay.innerText = `잘못된 접근`;
     }
-}
 
-nicknameForm.addEventListener("submit", handleWelcomeSubmit);
-/* nickname form 관련 */
+    if (roomName) {
+        document.getElementById("roomTitle").innerText = `회의실: ${roomName}`;
+    } else {
+        document.getElementById("roomTitle").innerText = `회의실 (알 수 없음)`;
+    }
+    
+});
 
 
-/* 화상 회의 */
+
+/* 화상 회의 기능 */
 async function getCameras() {
     try {
         const devices = await navigator.mediaDevices.enumerateDevices();
         const cameras = devices.filter(device => device.kind === "videoinput");
         const currentCamera = myStream.getVideoTracks()[0];
+
         cameras.forEach(camera => {
             const option = document.createElement("option");
             option.value = camera.deviceId;
@@ -58,18 +62,12 @@ async function getCameras() {
 }
 
 async function getMedia(deviceID) {
-    const initialConstraints = {
+    const constraints = {
         audio: true,
-        video: { facingMode: "user" },
-    };
-    const cameraConstraints = {
-        audio: true,
-        video: { deviceId: { exact: deviceID } },
+        video: deviceID ? { deviceId: { exact: deviceID } } : { facingMode: "user" },
     };
     try {
-        myStream = await navigator.mediaDevices.getUserMedia(
-            deviceID ? cameraConstraints : initialConstraints
-        );
+        myStream = await navigator.mediaDevices.getUserMedia(constraints);
         myFace.srcObject = myStream;
         if (!deviceID) {
             await getCameras();
@@ -81,13 +79,13 @@ async function getMedia(deviceID) {
 
 function handleMuteClick() {
     myStream.getAudioTracks().forEach(track => track.enabled = !track.enabled);
-    muteBtn.innerText = muted ? "Unmute" : "Mute";
+    muteBtn.innerText = muted ? "Mute" : "Unmute";
     muted = !muted;
 }
 
 function handleCameraClick() {
     myStream.getVideoTracks().forEach(track => track.enabled = !track.enabled);
-    cameraBtn.innerText = cameraoff ? "Turn Camera On" : "Turn Camera Off";
+    cameraBtn.innerText = cameraoff ? "Turn Camera Off" : "Turn Camera On";
     cameraoff = !cameraoff;
 }
 
@@ -100,52 +98,151 @@ cameraBtn.addEventListener("click", handleCameraClick);
 camerasSelect.addEventListener("change", handleCameraChange);
 
 
-
-async function initCall() {
+async function StartMedia() {
+    // checking if makeConnection() has called - debugging
+    console.log("Starting Media...");    
     await getMedia();
     makeConnection();
+    
 }
 
 
-socket.on("welcome", async () => {
+// 닉네임 입력
+async function handleNicknameSubmit(event) {
+    event.preventDefault();
+
+    const nicknameInput = nicknameForm.querySelector("input");
+    if (nicknameInput.value.trim() !== "") {
+        myNickname = nicknameInput.value.trim();
+        sessionStorage.setItem("nickname", myNickname); // 닉네임 저장
+        nicknameDisplay.innerText = myNickname;
+        nicknameForm.hidden = true;
+        call.hidden = false; 
+        await StartMedia();
+        
+    } else {
+        alert("닉네임을 입력하세요.");
+    } 
+    //join_room     
+    socket.emit("join_room", roomID, myNickname, (response) => {
+        if (response.error) {
+            alert("[CLIENT] Join room error:", response.error);
+        } else {
+            console.log(`[CLIENT] Successfully joined room: ${roomID}`);
+        }
+    });
+    
+}
+
+nicknameForm.addEventListener("submit", handleNicknameSubmit);
+
+
+
+
+// Socket Code
+/*Socket.IO WebRTC 핸들링*/
+socket.on("welcome", async ({ user }) => {
     const offer = await myPeerConnection.createOffer();
-    myPeerConnection.setLocalDescription(offer);
-    socket.emit("offer", offer, roomName);
+    myPeerConnection.setLocalDescription(offer);    
+    socket.emit("offer", offer, roomID);
+    console.log("[CLIENT] Sent offer to room:", roomID);
+});
+
+
+//모든 event log 확인 
+socket.onAny((event, ...args) => {
+    console.log(`[CLIENT] Socket received event: ${event}`, args);
 });
 
 socket.on("offer", async (offer) => {
+    console.log("received the offer");
     await myPeerConnection.setRemoteDescription(offer);
     const answer = await myPeerConnection.createAnswer();
     myPeerConnection.setLocalDescription(answer);
-    socket.emit("answer", answer, roomName);
+    
+    socket.emit("answer", answer, roomID);
+    console.log(" [CLIENT] sent the answer");//debugging
 });
 
 socket.on("answer", answer => {
+    
     myPeerConnection.setRemoteDescription(answer);
+    console.log("[CLIENT] received the answer");
 });
 
 socket.on("ice", ice => {
+    console.log("[CLIENT] Received ICE Candidate:", ice);
     myPeerConnection.addIceCandidate(ice);
 });
 
+
+/* Peer 연결 설정 */
 function makeConnection() {
     myPeerConnection = new RTCPeerConnection();
+    // debugging
+    console.log("RTCPeerConnection created", myPeerConnection);
+    
     myPeerConnection.addEventListener("icecandidate", handleIce); 
-    myPeerConnection.addEventListener("track", handleAddStream);
-    myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
+    myPeerConnection.addEventListener("track", handleTrack);
+
+    //debugging
+    if (myStream) {
+        myStream.getTracks().forEach((track) => myPeerConnection.addTrack(track, myStream));
+    } else {
+        console.error("makeConnection() 실행 시 myStream이 정의되지 않음");
+    }
+    
 }
 
 function handleIce(event) {
+    console.log("sent candidate ICE");
     if (event.candidate) {
-        socket.emit("ice", event.candidate, roomName);
+        socket.emit("ice", event.candidate, roomID);
     }
 }
 
-function handleAddStream(event) {
+function handleTrack(event) {    
     const peerFace = document.getElementById("peerFace");
-    if(peerFace) {
+    if (peerFace) {
         peerFace.srcObject = event.streams[0];
     } else {
         console.error("PeerFace element not found");
     }
 }
+
+/*  팝업 기능 */
+function openPopup(popupType) {
+    document.querySelector(`.popup[data-popup='${popupType}']`).style.display = "block";
+}
+
+function closePopup(popupType) {
+    document.querySelector(`.popup[data-popup='${popupType}']`).style.display = "none";
+}
+document.getElementById("yesBtn").addEventListener("click", function() {
+    window.location.href = "/"; 
+});
+
+
+document.getElementById("leaveMeeting").addEventListener("click", function() {
+    openPopup("leave-meeting");
+    
+});
+
+document.getElementById("meetingcode").addEventListener("click", function() {
+    openPopup("meeting-code");
+});
+
+document.querySelectorAll(".popup .close").forEach(button => {
+    button.addEventListener("click", function() {
+        const popup = button.closest(".popup");
+        popup.style.display = "none";
+    });
+});
+
+document.querySelectorAll(".popup").forEach(popup => {
+    popup.addEventListener("mousedown", function(event) {
+        if (!event.target.closest(".window")) {
+            popup.style.display = "none";
+        }
+    });
+});

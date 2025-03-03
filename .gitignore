@@ -1,2 +1,4 @@
 /node_modules
+.env
 /src/public/myFace.jpg
+package-lock.json

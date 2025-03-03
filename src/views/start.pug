@@ -4,7 +4,7 @@ html(lang="en")
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title AI-dira Start Page
-        link(rel="stylesheet", href="https://unpkg.com/mvp.css")
+        //link(rel="stylesheet", href="https://unpkg.com/mvp.css")
         link(rel="stylesheet", href="/public/css/start.css")
     body
         main
@@ -25,4 +25,6 @@ html(lang="en")
                 div#visualContainer
                     img(src="/public/images/welcome.png", alt="Welcome to AI-dira")
         script(src="/socket.io/socket.io.js")
-        script(src="/public/js/start.js")    
+        script(type="module" src="/public/js/socket.js")
+        script(type="module" src="/public/js/start.js")   
+        

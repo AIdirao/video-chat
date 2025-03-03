@@ -4,11 +4,13 @@ html(lang="en")
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title Aidirao
-        link(rel="stylesheet", href="https://unpkg.com/mvp.css")
+        //link(rel="stylesheet", href="https://unpkg.com/mvp.css")
+        link(rel="stylesheet", href="/public/css/start.css")
         script(src="https://cdn.jsdelivr.net/npm/nsfwjs")
     body
         header
             h1 Ai-dirao
+            h2#roomTitle RoomName loading...
         main
             div#welcome
                 form#nicknameForm
@@ -17,10 +19,32 @@ html(lang="en")
 
             div#call(hidden)
                 div#myStream
+                    div.nickname-container
+                        span#nickname nickname  
                     video#myFace(autoplay, playsinline, width="400", height="400")
                     button#mute Mute
                     button#camera Turn Camera Off
                     select#cameras
-                video#peerFace(autoplay, playsinline, width="400", height="400")
+                div#peerStream
+                    div.peer-nickname-container
+                        span#peerNickname Peer
+                    video#peerFace(autoplay, playsinline, width="400", height="400")
+
+                
+                button#leaveMeeting(data-popup="leave-meeting") Leave Meeting
+                .popup(data-popup="leave-meeting")
+                    .window
+                        .close x
+                        p Are you sure you want to leave the meeting?
+                        form
+                            button#yesBtn(type="button") Yes
+                            button(type="button", onclick="closePopup()") No
+                
+                button#meetingcode(data-popup = "meeting-code") meetingcode 
+                .popup(data-popup="meeting-code")
+                    .window
+                        .close x
+                        p#meetingCodeDisplay 회의 참여 코드:
     script(src="/socket.io/socket.io.js")
-    script(src="/public/js/app.js")
+    script(type="module" src="/public/js/socket.js")
+    script(type="module" src="/public/js/app.js")
