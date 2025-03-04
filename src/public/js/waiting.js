@@ -614,7 +614,7 @@ function coverNudity(ctx) {
 /* ✅ NSFW.js 모델 로드 */
 async function loadNSFWModel() {
     try {
-        const modelPath = "http://localhost:3000/models/model.json"; 
+        const modelPath = "/nsfw_model/model.json"; 
         nsfwModel = await nsfwjs.load(modelPath, { size: 299 }); 
         console.log("✅ NSFW.js 모델 로드 완료");
     } catch (error) {
