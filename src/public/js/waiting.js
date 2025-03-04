@@ -553,8 +553,8 @@ myFace.addEventListener("loadedmetadata", () => {
     nsfwBoundingCanvas.width = nsfwCanvas.width;
     nsfwBoundingCanvas.height = nsfwCanvas.height;
 
-    console.log("✅ NSFW Canvas 크기 설정 완료:", nsfwCanvas.width, nsfwCanvas.height);
-    console.log("✅ Bounding Box Canvas 크기 설정 완료:", nsfwBoundingCanvas.width, nsfwBoundingCanvas.height);
+    console.log(" NSFW Canvas 크기 설정 완료:", nsfwCanvas.width, nsfwCanvas.height);
+    console.log(" Bounding Box Canvas 크기 설정 완료:", nsfwBoundingCanvas.width, nsfwBoundingCanvas.height);
     // NSFW 캔버스 스타일 적용
     nsfwCanvas.style.position = 'relative'; // 부모 기준 위치 설정
     nsfwCanvas.style.display = 'block';
@@ -597,47 +597,47 @@ myFace.addEventListener("loadedmetadata", () => {
 });
 
 
-/* ✅ NSFW 감지 함수 */
+/* NSFW 감지 함수 */
 const nsfwCategories = ["porn", "sexy", "hentai"];
 const nsfwThresholds = { 
-    //porn: 0.4, 
-    sexy: 0.1,
+    porn: 0.99, 
+    sexy: 0.3,
     hentai: 0.3,  
 };
 
-/* ✅ 감지된 경우 화면 전체를 반투명 검정으로 덮음 */
+/* 감지된 경우 화면 전체를 반투명 검정으로 덮음 */
 function coverNudity(ctx) {
     ctx.fillStyle = 'rgba(0, 0, 0, 1)'; // 반투명 검정
     ctx.fillRect(0, 0, nsfwBoundingCanvas.width, nsfwBoundingCanvas.height);
 }
 
-/* ✅ NSFW.js 모델 로드 */
+/* NSFW.js 모델 로드 */
 async function loadNSFWModel() {
     try {
         const modelPath = "/nsfw_model/model.json"; 
         nsfwModel = await nsfwjs.load(modelPath, { size: 299 }); 
-        console.log("✅ NSFW.js 모델 로드 완료");
+        console.log("NSFW.js 모델 로드 완료");
     } catch (error) {
-        console.error("❌ NSFW.js 모델 로드 실패:", error);
+        console.error("NSFW.js 모델 로드 실패:", error);
     }
 }
 
 async function analyzeNSFWFrame() {
     if (!nsfwModel) {
-        console.warn("🚨 NSFW 모델이 없음! 감지 불가.");
+        console.warn("NSFW 모델이 없음! 감지 불가.");
         return;
     }
 
     nsfwCtx.drawImage(myFace, 0, 0, nsfwCanvas.width, nsfwCanvas.height);
     const predictions = await nsfwModel.classify(nsfwCanvas);
-    console.log("🔍 NSFW 예측 결과:", predictions);
+    //console.log("NSFW 예측 결과:", predictions);
 
     let isExplicit = false;
 
     for (const pred of predictions) {
         const category = pred.className.toLowerCase();
         if (nsfwCategories.includes(category) && pred.probability > nsfwThresholds[category]) {
-            console.warn(`🚨 NSFW 감지됨! [${category}] 확률: ${pred.probability}`);
+            console.warn(`NSFW 감지됨! [${category}] 확률: ${pred.probability}`);
             isExplicit = true;
         }
     }
@@ -651,11 +651,11 @@ async function analyzeNSFWFrame() {
 
     if (nsfwCheckRunning) {
         requestAnimationFrame(analyzeNSFWFrame);
-        console.log(" 계속 탐지 진행 중....");
+        //console.log(" 계속 탐지 진행 중....");
     }
 }
 
-/* ✅ NSFW 감지 시작 */
+/* NSFW 감지 시작 */
 async function startNSFWCheck() {
     try {
         await loadNSFWModel();
@@ -664,7 +664,7 @@ async function startNSFWCheck() {
         nsfwCheckRunning = true;
         analyzeNSFWFrame();
     } catch (error) {
-        console.error("❌ NSFW 감지 시스템 초기화 실패:", error);
+        console.error("NSFW 감지 시스템 초기화 실패:", error);
     }
 }
 
