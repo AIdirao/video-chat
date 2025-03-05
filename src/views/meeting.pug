@@ -9,29 +9,35 @@ html(lang="en")
         script(src="https://cdn.jsdelivr.net/npm/nsfwjs")
     body
         header
-            h1 Ai-dirao
+            h1#meeting AI-dira🌐 
             h2#roomTitle RoomName loading...
         main
             div#welcome
                 form#nicknameForm
-                    input(placeholder="nickname", required, type="text")
-                    button(type="submit") Save Nickname
+                    input#nicknameinput(placeholder="nickname을 입력하세요.", required, type="text")
+                    button#savenickname(type="submit") Save Nickname
 
-            div#call(hidden)
+            div#call_meeting(hidden)
                 div#myStream
                     div.nickname-container
                         span#nickname nickname  
                     video#myFace(autoplay, playsinline, width="400", height="400")
-                    button#mute Mute
-                    button#camera Turn Camera Off
-                    select#cameras
+
                 div#peerStream
                     div.peer-nickname-container
-                        span#peerNickname Peer
+                        span#peerNickname peer
                     video#peerFace(autoplay, playsinline, width="400", height="400")
 
                 
-                button#leaveMeeting(data-popup="leave-meeting") Leave Meeting
+                footer#bottomBar
+                    button#mute Mute
+                    button#camera Turn Camera Off  
+                    select#cameras                  
+                    button#meetingcode(data-popup="meeting-code") Meeting Code
+                    button#leaveMeeting(data-popup="leave-meeting") Leave Meeting
+                    
+                
+
                 .popup(data-popup="leave-meeting")
                     .window
                         .close x
@@ -40,11 +46,12 @@ html(lang="en")
                             button#yesBtn(type="button") Yes
                             button(type="button", onclick="closePopup()") No
                 
-                button#meetingcode(data-popup = "meeting-code") meetingcode 
+
                 .popup(data-popup="meeting-code")
                     .window
                         .close x
                         p#meetingCodeDisplay 회의 참여 코드:
+
     script(src="/socket.io/socket.io.js")
     script(type="module" src="/public/js/socket.js")
     script(type="module" src="/public/js/app.js")

@@ -4,14 +4,16 @@ const myFace = document.getElementById("myFace");
 const muteBtn = document.getElementById("mute");
 const cameraBtn = document.getElementById("camera");
 const camerasSelect = document.getElementById("cameras");
-const call = document.getElementById("call");
+const call = document.getElementById("call_meeting");
 const welcome = document.getElementById("welcome");
 const nicknameForm = document.getElementById("nicknameForm");
 const meetingCodeDisplay = document.getElementById("meetingCodeDisplay");
 const nicknameDisplay = document.getElementById("nickname");
 
-call.hidden = true; 
-nicknameForm.hidden = false;
+
+call.style.display = "none"; // 기본적으로 숨김
+nicknameForm.style.display = "flex"; 
+
 let myStream;
 let muted = false;
 let cameraoff = false;
@@ -116,8 +118,15 @@ async function handleNicknameSubmit(event) {
         myNickname = nicknameInput.value.trim();
         sessionStorage.setItem("nickname", myNickname); // 닉네임 저장
         nicknameDisplay.innerText = myNickname;
-        nicknameForm.hidden = true;
-        call.hidden = false; 
+
+        nicknameForm.style.display = "none";
+        welcome.style.display = "none"; // 닉네임 입력 화면 숨기기
+
+        // `#call_meeting` 활성화
+        call.hidden=false;
+        call.style.display = "flex"; 
+        call.style.pointerEvents = "auto"; // 클릭 가능하도록 설정
+        console.log("call_meeting 활성화됨"); 
         await StartMedia();
         
     } else {
@@ -141,12 +150,24 @@ nicknameForm.addEventListener("submit", handleNicknameSubmit);
 
 // Socket Code
 /*Socket.IO WebRTC 핸들링*/
-socket.on("welcome", async ({ user }) => {
+const peerNicknameDisplay = document.getElementById("peerNickname");
+let peername=""
+
+socket.on("welcome", async ({ user }) => {    
+    console.log("[CLIENT] 상대방 입장:", user);
+    peername=user;
+    if (peerNicknameDisplay && peername) {
+        peerNicknameDisplay.innerText = peername;
+        peerNicknameDisplay.style.display = "block";
+        console.log("[CLIENT] 상대방 닉네임 표시:", peername);
+    }
+
     const offer = await myPeerConnection.createOffer();
     myPeerConnection.setLocalDescription(offer);    
     socket.emit("offer", offer, roomID);
     console.log("[CLIENT] Sent offer to room:", roomID);
 });
+
 
 
 //모든 event log 확인 
@@ -162,6 +183,9 @@ socket.on("offer", async (offer) => {
     
     socket.emit("answer", answer, roomID);
     console.log(" [CLIENT] sent the answer");//debugging
+
+
+
 });
 
 socket.on("answer", answer => {
@@ -174,6 +198,7 @@ socket.on("ice", ice => {
     console.log("[CLIENT] Received ICE Candidate:", ice);
     myPeerConnection.addIceCandidate(ice);
 });
+
 
 
 /* Peer 연결 설정 */

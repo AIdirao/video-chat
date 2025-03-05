@@ -5,29 +5,9 @@ body, html {
     padding: 0;
     display: flex;
     flex-direction: column; /* 방향을 컬럼으로 변경 */
+    overflow: hidden; 
 }
 
-/* 사이드바 스타일 */
-.sidebar {
-    display: flex;
-    flex-direction: column;
-    width: 15vw; /* 사이드바 너비를 전체 화면의 15%로 설정 */
-    height: 100vh; /* 전체 높이 */
-    background-color: #f4f4f4; /* 배경색 */
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* 그림자 효과 */
-    padding: 1em; /* 안쪽 여백 */
-    position: fixed;/* 사이드바 고정 */
-    left: 0;
-    top: 0;
-}
-
-/* 메인 컨텐츠 영역 스타일 */
-.content {
-    margin-left: 25vw; /* 사이드바 너비만큼 왼쪽 여백 */
-    flex-grow: 1; /* 남은 공간 모두 차지 */
-    padding: 10px; /* 컨텐츠의 안쪽 여백 */
-    width: 85vw; /* 전체 너비에서 사이드바 너비를 뺀 나머지 너비 */
-}
 
 /* 화면 전체를 덮는 오버레이 */
 .overlay {
@@ -50,7 +30,6 @@ header {
     background-color: #fff;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     position: fixed;
-    z-index: 1000;
 }
 
 /* main 내부의 위치 조정 */
@@ -59,6 +38,267 @@ main {
     width: 100%; /* 전체 너비를 사용하도록 설정 */
 }
 
+/* start.pug */
+/* 가운데 정렬 */
+/* 스마트 회의 참가 영역 스타일 */
+#smartJoin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 60px;
+}
+
+/* 폼을 가로로 정렬 */
+#smartJoin .form-container {
+    display: flex;
+    gap: 20px; /* 폼 간 간격 설정 */
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap; /* 화면이 작아지면 줄 바꿈 */
+}
+
+/* 각 폼의 스타일 */
+#smartJoin form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+
+#smartJoin input {
+    text-align: center;
+}
+
+#visualContainer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#visualContainer img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* 사이드바 및 전체 화면 비율 조정 */
+/* 사이드바 스타일 */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 15vw; /* 사이드바 너비를 전체 화면의 15%로 설정 */
+    height: 100vh; /* 전체 높이 */
+    background-color: #ffffff; /* 배경색 */
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* 그림자 효과 */
+    padding: 1em; /* 안쪽 여백 */
+    position: fixed;/* 사이드바 고정 */
+    left: 0;
+    top: 0;
+}
+
+h1#aidirao {
+    text-align: center; /* 텍스트 가운데 정렬 */
+    width: 100%; /* 전체 너비를 차지하도록 설정 */
+}
+
+/* 버튼 */
+/* 기본 버튼 스타일 */
+#joinCamBtn, 
+#privacyModeBtn,
+#createMeetingForm button, 
+#enterCodeForm input,
+#createMeetingForm input,
+#nicknameinput /* meeting.pug */
+{
+    background-color: #ffffff; /* 기본 배경색 */
+    color: #D0BCBC; /* 기본 글자색 */
+    border: 2px solid #D0BCBC;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* start.pug에서는 joinCamBtn 색상을 변경 */
+body[data-page="start"] #joinCamBtn {
+    background-color: #D0BCBC;
+    color: white;
+}
+body[data-page="start"] #joinCamBtn:hover,
+#enterCodeForm button:hover
+{
+    background-color: white;
+    color: #D0BCBC;
+}
+
+/* privacyset.pug에서는 privacyModeBtn 색상을 변경 */
+body[data-page="privacyset"] #privacyModeBtn {
+    background-color: #D0BCBC;
+    color: white;
+}
+body[data-page="privacyset"] #joinCamBtn:hover,
+#createMeetingForm button:hover 
+{
+    background-color: #D0BCBC; 
+    color: #988383;
+}
+body[data-page="privacyset"] #privacyModeBtn:hover {
+    background-color: white;
+    color: #D0BCBC;
+}
+
+#enterCodeForm button,
+#savenickname /* meeting.pug */
+{
+    background-color: #D0BCBC; /* 버튼 배경색 변경 */
+    color: #ffffff; /* 글자색 (필요에 따라 조정) */
+    border: 2px solid #D0BCBC; /*  테두리  */
+    padding: 10px 20px; /* 버튼 내부 여백 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    cursor: pointer; /* 마우스 오버 시 포인터 변경 */
+    font-size: 16px; /* 글자 크기 */
+    transition: background-color 0.3s; /* 부드러운 색 변화 효과 */
+}
+
+
+
+/* 메인 컨텐츠 영역 스타일 */
+.startContent,
+#checkfiltering
+{
+    margin-left: 15vw; /* 사이드바 너비만큼 왼쪽 여백 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 세로 중앙 정렬 */
+    align-items: center; /* 가로 중앙 정렬 */
+    padding: 10px;
+    width: calc(100vw - 15vw); /* 전체 화면 너비에서 사이드바 너비를 제외 */
+    height: 100vh; /* 전체 높이 설정 */
+}
+
+h2#start_title {
+    font-size:40px;
+    text-align: center; 
+    margin-bottom: 15px;
+}
+p#start_p{
+    text-align: center; 
+    margin-bottom: 50px;
+}
+
+/* privacyset.pug */
+#checkfiltering {
+    margin-left: 15vw; /* 사이드바 너비만큼 왼쪽 여백 */
+    padding-left: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+    width: 85vw; 
+    height: 100vh;
+    overflow: hidden;
+}
+.privacyset-box {
+    background-color: #ffffff; /* 배경 흰색 */
+    border-radius: 10px; /* 모서리 둥글게 */
+    border: 1px solid #D0BCBC; /* 연한 테두리 */
+    padding: 20px; /* 내부 여백 */
+    width: 90%; /* 너비 조정 */
+    max-width: 600px; /* 최대 너비 */
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* 가벼운 그림자 효과 */
+}
+
+
+
+/*  Waiting.pug  */
+/* 전체 컨테이너 가로 정렬 */
+#waitingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    gap: 50px; /* 요소 사이 간격 */
+}
+
+/* 영상과 버튼 컨테이너 */
+#myStream {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto; /* 최대 너비 조정 */
+    height: auto; /* 비율 유지 */
+    max-height: 70vh; /* 화면 높이의 70%까지만 사용 */
+    overflow: hidden; /* 넘치는 부분 숨김 */
+}
+
+/* 컨트롤 버튼 (Mute, Camera, Background) */
+#controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+/* 버튼 */
+#mute,
+#camera,
+#background {
+    background-color: #D0BCBC;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+/* 버튼 hover 효과 */
+#mute:hover,
+#camera:hover,
+#background:hover {
+    background-color: #BFA3A3;
+}
+
+/* 참여 요청 박스 */
+#askEnter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+}
+
+/* "지금 참여하기" 버튼 스타일 */
+#enterMeeting {
+    margin-top: 10vw;
+    background-color: #D0BCBC;
+    border: none;
+    width: 200px;
+    height: 50px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+
+
+
+
+/* meeting.pug  */
+/* header */
+h1#meeting,
+h2#roomTitle
+{
+    text-align: center;
+}
+
+
 /* 폼 위치 조정 */
 #welcome {
     padding-top: 100px; /* 추가적인 상단 여백 제공 */
@@ -66,12 +306,18 @@ main {
     justify-content: center; /* 폼을 가운데 정렬 */
     flex-direction: column; /* 요소들을 세로로 정렬 */
     align-items: center; /* 세로 축 중앙 정렬 */
+    
 }
 
 #nicknameForm {
     width: 50%; /* 폼의 너비를 50%로 설정 */
     max-width: 600px; /* 최대 너비 설정 */
+    display: flex;
+    flex-direction: column; /* 요소들을 세로로 정렬 */
+    align-items: center; /* 가로 중앙 정렬 */
 }
+
+
 
 
 /* 버튼 스타일 */
@@ -81,56 +327,135 @@ button {
     padding: 10px 20px;
 }
 
-/* 기타 스타일 */
-h2,  p {
-    margin: 10px 0;
-    text-align: center; 
-    margin-right:10vw;
 
-}
-h1 {
-    margin-right:0;
-}
 
-/*                                   meeting.pug                           */
-/*  닉네임   */
+
+/*   닉네임   */
 /* 내 비디오 닉네임 */
 .nickname-container {
     position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: black;
+    top: 60px; /* 아래쪽 여백 */
+    align-items: center;
+    color: black; /* 글자 색상 */
     padding: 5px 10px;
     border-radius: 8px;
     font-size: 14px;
     font-weight: bold;
+    white-space: nowrap;
+    z-index: 10;
 }
 
 /* 상대방 비디오 닉네임 */
 .peer-nickname-container {
     position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: black;
+    top: 60px; /* 아래쪽 여백 */
+    align-items: center;
+    color: black; /* 글자 색상 */
     padding: 5px 10px;
     border-radius: 8px;
     font-size: 14px;
     font-weight: bold;
+    white-space: nowrap;
+    z-index: 10;
+}
+#peerNickname {
+    display: none; /* 기본적으로 숨김 */
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
 }
 
-/* 비디오 컨테이너 스타일 */
-#myStream, #peerStream {
-    position: relative;
-    display: inline-block;
+.peer-active #peerNickname {
+    display: block; /* 상대방이 들어오면 표시 */
 }
+
+
+/* 비디오 컨테이너 스타일 */
+#call_meeting {
+    display: none;
+    flex-direction: column; /* 세로 정렬 */
+    justify-content: center; /* 세로 중앙 정렬 */
+    align-items: center; /* 가로 중앙 정렬 */
+    height: auto; /* 화면 높이에서 100px 제외 */
+    width: 100vw;
+    position: fixed;
+    top:0;
+    left: 0;
+    z-index: 10;
+    margin-top: 100px;
+    gap: 5px;
+}
+
+/* #call_meeting 활성화 시 표시 */
+#call_meeting:not([hidden]){
+    display: flex;
+}
+
+/* 각 스트림을 동일한 크기로 설정 */
+#myStream, #peerStream {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* 내부 요소 세로 중앙 정렬 */
+    width: 400px;
+    height: auto;
+    min-height: 450px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.1); /* 약간의 반투명 배경 */
+    border-radius: 10px;
+    margin: 0; /* 스트림 간 간격 추가 */
+    position: relative;
+    flex-grow: 0;
+}
+
+
+/* 비디오 스타일 */
+video {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+
+/* 하단 바 */
+/* 하단바 스타일 */
+#bottomBar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #D0BCBC;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 15px 10px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* 하단바 버튼 스타일 */
+#bottomBar button {
+    background-color: #767676;
+    border: none;
+    padding: 10px 15px;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#bottomBar button:hover {
+    background-color: #BFA3A3;
+}
+
 
 /* 팝업 스타일 */
 .popup {
     display: none;
     width: 100%;
     height: 100%;
+    
     position: fixed;
     left: 0;
     top: 0;

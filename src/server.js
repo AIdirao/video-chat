@@ -64,7 +64,7 @@ app.post("/generate-presigned-url", async (req, res) => {
         };
 
         const command = new PutObjectCommand(params);
-        const presignedUrl = await getSignedUrl(s3, command, { expiresIn: 600 }); // 🔹 10분 유효
+        const presignedUrl = await getSignedUrl(s3, command, { expiresIn: 600 }); //  10분 유효
 
         const uploadedFileUrl = `https://${BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/uploads/${uniqueFileName}`;
 
@@ -142,7 +142,7 @@ wsServer.on("connection", (socket) => {
         console.log(`📡 [SERVER] Users in room ${roomID}:`, clients);
     
         // welcome 전송송
-        socket.to(roomID).emit("welcome", { user: socket.id });
+        socket.to(roomID).emit("welcome", { user: nickname });
         console.log(`[SERVER] Sent "welcome" event to room ${roomID}, for user: ${nickname}(${socket.id})`);
     });
     

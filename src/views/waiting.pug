@@ -10,18 +10,21 @@ html(lang="en")
 
 
     body
-        header
-            h1 Waiting Room
-        main            
-            div#call
-                div#myStream
-                    video#myFace(autoplay, playsinline, width="400", height="400")
-                    button#mute Mute
-                    button#camera Turn Camera Off
-                    button#background Background Off
-                    select#cameras
+        main
+            div#waitingContainer
+                div#call_waiting
+                    div#myStream_waiting
+                        video#myFace(autoplay, playsinline, width="400", height="400")
+                        button#mute Mute
+                        button#camera Turn Camera Off
+                        button#background Background Off
+                        select#cameras
+                div#askEnter 
+                    h2#askEnter 입장하시겠습니까?   
+                    button(id="enterMeeting") 지금 참여하기        
+            
                 
-            button(id="enterMeeting") 회의 참가
+            
         
         script(src="/public/js/face-api.min.js")
         script(src="https://unpkg.com/nsfwjs@2.2.0", defer)
