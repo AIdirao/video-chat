@@ -1,4 +1,10 @@
-// 🔹 AWS Presigned URL 요청 함수
+// routing
+document.getElementById('joinCamBtn').addEventListener('click', function() {
+    window.location.href = '/';
+});
+
+
+// AWS Presigned URL 요청 함수
 async function getPresignedUrl(fileName, fileType) {
     try {
         console.log(`Presigned URL 요청: ${fileName}, ${fileType}`);
