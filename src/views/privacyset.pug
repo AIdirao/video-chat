@@ -14,16 +14,18 @@ html(lang="en")
                 button(id="privacyModeBtn") Privacy Mode
         div.choosefacefilter            
             div#checkfiltering
-                h3 얼굴 필터링
+                h3 Privacy를 고려한 얼굴 필터링 기능
                 div.privacyset-box  
-                    h4 설정한 얼굴만 화면에 노출됩니다.
+                    div
+                    h5 설정한 얼굴만 화면에 노출됩니다.
                     button.toggle-container
                         span 필터링 기능 설정
                         label.switch(for="filterToggle") 
                             input(type="checkbox" id="filterToggle")
                             span.slider
                     
-                    h4 허용할 얼굴 사진 업로드 (최대 10명)
+                    h4       
+                    h5 허용할 얼굴 사진 업로드 (최대 10명)
                     h5 *최대한 정면을 바라보고 찍으세요
                     input(type="file" id="faceUpload" accept="image/*" multiple) 
                     button(id="faceuploadinitializate") 업로드 사진 초기화

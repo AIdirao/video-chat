@@ -188,11 +188,13 @@ body[data-page="privacyset"] #privacyModeBtn:hover {
     margin-left: 15vw; /* 사이드바 너비만큼 왼쪽 여백 */
     display: flex;
     flex-direction: column;
+    border-radius: 5px; /* 모서리 둥글게 */
     justify-content: center; /* 세로 중앙 정렬 */
     align-items: center; /* 가로 중앙 정렬 */
     width: calc(100vw - 15vw); /* 전체 화면 너비에서 사이드바 너비를 제외 */
     height: 100vh; /* 전체 높이 설정 */
 }
+
 
 h2#start_title {
     font-size:45px;
@@ -211,6 +213,8 @@ p#start_p{
 
 /* privacyset.pug */
 #checkfiltering {
+    background-color: #D0BCBC;
+    color: white;
     margin-left: 15vw; /* 사이드바 너비만큼 왼쪽 여백 */
     padding-left: 50px;
     display: flex;
@@ -224,6 +228,7 @@ p#start_p{
 }
 .privacyset-box {
     background-color: #ffffff; /* 배경 흰색 */
+    color : black;
     border-radius: 10px; /* 모서리 둥글게 */
     border: 1px solid #D0BCBC; /* 연한 테두리 */
     padding: 20px; /* 내부 여백 */
@@ -233,10 +238,37 @@ p#start_p{
     margin: 0; /* 모든 여백을 0으로 설정하여 페이지의 왼쪽에 붙임 */
 }
 
-
-
+.toggle-container,#faceUpload{
+    background-color: white; /* 버튼 배경색 변경 */
+    color:  #D0BCBC;
+    border: 2px solid #D0BCBC; /*  테두리  */
+    padding: 10px 20px; /* 버튼 내부 여백 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    cursor: pointer; /* 마우스 오버 시 포인터 변경 */
+    font-size: 20px; /* 글자 크기 */
+    font-weight: bold; /* 글씨 두껍게 */
+    font-family: Arial; /* 글씨체 변경 */
+    width:auto; /* 박스 길이 고정 */
+    height : auto;
+    transition: background-color 0.3s; /* 부드러운 색 변화 효과 */
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* 그림자 효과 */
+}
+#faceuploadinitializate{
+    background-color: white; /* 버튼 배경색 변경 */
+    color: #D0BCBC; /* 글자색 (필요에 따라 조정) */
+    border: 2px solid #D0BCBC; /*  테두리  */
+    padding: 10px 10px; /* 버튼 내부 여백 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    cursor: pointer; /* 마우스 오버 시 포인터 변경 */
+    font-size: 20px; /* 글자 크기 */
+    font-weight: bold; /* 글씨 두껍게 */
+    font-family: Arial; /* 글씨체 변경 */
+    width: 250px; /* 박스 길이 고정 */
+    height : 50px;
+    transition: background-color 0.3s; /* 부드러운 색 변화 효과 */
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* 그림자 효과 */
+}
 /*  Waiting.pug  */
-/* 전체 컨테이너 가로 정렬 */
 /* 전체 컨테이너 가로 정렬 */
 #waitingContainer {
     display: flex;           /* 추가: flex 컨테이너로 만듦 */
