@@ -8,5 +8,5 @@
 // });
 
 // export default socket;
-const socket = io(); // 서버에서 자동으로 클라이언트 라이브러리를 제공
+const socket = io("http://15.164.211.147:3000"); // 서버에서 자동으로 클라이언트 라이브러리를 제공
 export default socket;
