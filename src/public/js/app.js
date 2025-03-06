@@ -203,20 +203,36 @@ socket.on("ice", ice => {
 
 /* Peer 연결 설정 */
 function makeConnection() {
-    myPeerConnection = new RTCPeerConnection();
-    // debugging
+    myPeerConnection = new RTCPeerConnection({
+        iceServers: [
+            {
+                urls: [
+                    "stun:stun.l.google.com:19302",
+                ],
+            },
+            {
+                urls: "turn:15.164.211.147:3478",
+                username: "user",
+                credential: "661a478250484e2572c90d0f5506acbd7d0c0aebb9a8e2e81f95efed8b554ee2"
+            },
+            {
+                urls: "turns:15.164.211.147:3478",
+                username: "user",
+                credential: "661a478250484e2572c90d0f5506acbd7d0c0aebb9a8e2e81f95efed8b554ee2"
+            },
+        ],
+    });
+
     console.log("RTCPeerConnection created", myPeerConnection);
-    
-    myPeerConnection.addEventListener("icecandidate", handleIce); 
+
+    myPeerConnection.addEventListener("icecandidate", handleIce);
     myPeerConnection.addEventListener("track", handleTrack);
 
-    //debugging
     if (myStream) {
         myStream.getTracks().forEach((track) => myPeerConnection.addTrack(track, myStream));
     } else {
         console.error("makeConnection() 실행 시 myStream이 정의되지 않음");
     }
-    
 }
 
 function handleIce(event) {
