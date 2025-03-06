@@ -31,20 +31,20 @@ html(lang="en")
                 
                 footer#bottomBar
                     button#mute Mute
-                    button#camera Turn Camera Off  
-                    select#cameras                  
+                    button#camera Turn Camera Off
+                    button#background Turn Background Off                
                     button#meetingcode(data-popup="meeting-code") Meeting Code
                     button#leaveMeeting(data-popup="leave-meeting") Leave Meeting
-                    
+                    select#cameras    
                 
 
                 .popup(data-popup="leave-meeting")
                     .window
                         .close x
                         p Are you sure you want to leave the meeting?
-                        form
+                        form#yesnoForm
                             button#yesBtn(type="button") Yes
-                            button(type="button", onclick="closePopup()") No
+                            button#noBtn(type="button", onclick="closePopup()") No
                 
 
                 .popup(data-popup="meeting-code")

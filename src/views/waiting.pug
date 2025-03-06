@@ -14,18 +14,18 @@ html(lang="en")
             div#waitingContainer
                 div#call_waiting
                     div#myStream_waiting
-                        video#myFace(autoplay, playsinline, width="400", height="400")
-                        button#mute Mute
-                        button#camera Turn Camera Off
-                        button#background Background Off
-                        select#cameras
-                div#askEnter 
-                    h2#askEnter 입장하시겠습니까?   
-                    button(id="enterMeeting") 지금 참여하기        
-            
-                
-            
-        
+                        video#myFace(autoplay, playsinline)
+                        div#controls
+                            button#mute Mute
+                            button#camera Turn Camera Off
+                            button#background Turn Background Off
+                div#askEnter
+                    h2#askEnter 입장하시겠습니까?
+                    button(id="enterMeeting") 지금 참여하기
+                    select#cameras
+
+     
+    
         script(src="/public/js/face-api.min.js")
         script(src="https://unpkg.com/nsfwjs@2.2.0", defer)
         script(src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js")
