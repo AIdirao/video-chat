@@ -30,7 +30,7 @@ const nsfwOffscreenCtx = nsfwOffscreenCanvas.getContext("2d");
 let nsfwModel = null;
 const nsfwCategories = ["porn", "sexy", "hentai"];
 const nsfwThresholds = { 
-    porn: 0.999, 
+    porn: 0.9, 
     sexy: 0.1,
     hentai: 0.3,  
 };
@@ -233,7 +233,7 @@ async function applyVirtualBackground() {
         videoCtx.clearRect(0, 0, videoCanvas.width, videoCanvas.height);
         if (!results.segmentationMask || !isBackgroundEnabled) {
             videoCtx.drawImage(processingCanvas, 0, 0, videoCanvas.width, videoCanvas.height);
-            console.log("background off");
+            //console.log("background off");
         }else {
             videoCtx.save();
             videoCtx.translate(videoCanvas.width, 0);
@@ -262,7 +262,6 @@ async function applyVirtualBackground() {
             censoredImg.onload = () => {
                 videoCtx.drawImage(censoredImg, 0, 0, videoCanvas.width, videoCanvas.height);
             };
-            censoredImg.src = '/public/images/censored.jpg';
         }
     });
 
@@ -334,7 +333,7 @@ async function drawFaceBoxes() {
                 ctx.fillRect(reversedBox.x, reversedBox.y, reversedBox.width, reversedBox.height);
             }
         });
-        setTimeout(detectFaces, 200); // 200ms마다 얼굴 감지
+        setTimeout(detectFaces); // 200ms마다 얼굴 감지
     }
     detectFaces();
 }

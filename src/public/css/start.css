@@ -34,7 +34,7 @@ header {
 
 /* main 내부의 위치 조정 */
 main {
-    margin-top: 80px; /* 헤더의 높이보다 약간 더 큰 값을 주어 헤더 아래에 위치하도록 함 */
+    margin-top: 60px; /* 헤더의 높이보다 약간 더 큰 값을 주어 헤더 아래에 위치하도록 함 */
     width: 100%; /* 전체 너비를 사용하도록 설정 */
 }
 
@@ -108,7 +108,6 @@ h1#aidirao {
 /* 기본 버튼 스타일 */
 #joinCamBtn, 
 #privacyModeBtn,
-#createMeetingForm button, 
 #enterCodeForm input,
 #createMeetingForm input,
 #nicknameinput /* meeting.pug */
@@ -119,8 +118,13 @@ h1#aidirao {
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 20px;
+    font-weight : bold;
+    font-family :Arial;
+    text-align: center; /* 텍스트를 중앙 정렬 */
     transition: background-color 0.3s, border-color 0.3s;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* 그림자 효과 */
+
 }
 
 /* start.pug에서는 joinCamBtn 색상을 변경 */
@@ -134,6 +138,11 @@ body[data-page="start"] #joinCamBtn:hover,
     background-color: white;
     color: #D0BCBC;
 }
+body[data-page="start"] #privacyModeBtn:hover
+{
+    background-color: #ffffff;
+    color: #988383;
+}
 
 /* privacyset.pug에서는 privacyModeBtn 색상을 변경 */
 body[data-page="privacyset"] #privacyModeBtn {
@@ -143,7 +152,7 @@ body[data-page="privacyset"] #privacyModeBtn {
 body[data-page="privacyset"] #joinCamBtn:hover,
 #createMeetingForm button:hover 
 {
-    background-color: #D0BCBC; 
+    background-color: white;
     color: #988383;
 }
 body[data-page="privacyset"] #privacyModeBtn:hover {
@@ -151,7 +160,9 @@ body[data-page="privacyset"] #privacyModeBtn:hover {
     color: #D0BCBC;
 }
 
+
 #enterCodeForm button,
+#createMeetingForm button, 
 #savenickname /* meeting.pug */
 {
     background-color: #D0BCBC; /* 버튼 배경색 변경 */
@@ -160,10 +171,14 @@ body[data-page="privacyset"] #privacyModeBtn:hover {
     padding: 10px 20px; /* 버튼 내부 여백 */
     border-radius: 5px; /* 모서리 둥글게 */
     cursor: pointer; /* 마우스 오버 시 포인터 변경 */
-    font-size: 16px; /* 글자 크기 */
+    font-size: 20px; /* 글자 크기 */
+    font-weight: bold; /* 글씨 두껍게 */
+    font-family: Arial; /* 글씨체 변경 */
+    width: 250px; /* 박스 길이 고정 */
+    height : 50px;
     transition: background-color 0.3s; /* 부드러운 색 변화 효과 */
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* 그림자 효과 */
 }
-
 
 
 /* 메인 컨텐츠 영역 스타일 */
@@ -173,76 +188,125 @@ body[data-page="privacyset"] #privacyModeBtn:hover {
     margin-left: 15vw; /* 사이드바 너비만큼 왼쪽 여백 */
     display: flex;
     flex-direction: column;
+    border-radius: 5px; /* 모서리 둥글게 */
     justify-content: center; /* 세로 중앙 정렬 */
     align-items: center; /* 가로 중앙 정렬 */
-    padding: 10px;
     width: calc(100vw - 15vw); /* 전체 화면 너비에서 사이드바 너비를 제외 */
     height: 100vh; /* 전체 높이 설정 */
 }
 
+
 h2#start_title {
-    font-size:40px;
+    font-size:45px;
+    font-weight: bold;
     text-align: center; 
     margin-bottom: 15px;
 }
 p#start_p{
     text-align: center; 
     margin-bottom: 50px;
+    font-size: 20px;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    font-weight: bold;
 }
 
 /* privacyset.pug */
 #checkfiltering {
+    background-color: #D0BCBC;
+    color: white;
     margin-left: 15vw; /* 사이드바 너비만큼 왼쪽 여백 */
     padding-left: 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center; 
+    font-size : 25px;
     width: 85vw; 
     height: 100vh;
     overflow: hidden;
 }
 .privacyset-box {
     background-color: #ffffff; /* 배경 흰색 */
+    color : black;
     border-radius: 10px; /* 모서리 둥글게 */
     border: 1px solid #D0BCBC; /* 연한 테두리 */
     padding: 20px; /* 내부 여백 */
     width: 90%; /* 너비 조정 */
-    max-width: 600px; /* 최대 너비 */
+    max-width: 1000px; /* 최대 너비 */
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* 가벼운 그림자 효과 */
+    margin: 0; /* 모든 여백을 0으로 설정하여 페이지의 왼쪽에 붙임 */
 }
 
-
-
+.toggle-container,#faceUpload{
+    background-color: white; /* 버튼 배경색 변경 */
+    color:  #D0BCBC;
+    border: 2px solid #D0BCBC; /*  테두리  */
+    padding: 10px 20px; /* 버튼 내부 여백 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    cursor: pointer; /* 마우스 오버 시 포인터 변경 */
+    font-size: 20px; /* 글자 크기 */
+    font-weight: bold; /* 글씨 두껍게 */
+    font-family: Arial; /* 글씨체 변경 */
+    width:auto; /* 박스 길이 고정 */
+    height : auto;
+    transition: background-color 0.3s; /* 부드러운 색 변화 효과 */
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* 그림자 효과 */
+}
+#faceuploadinitializate{
+    background-color: white; /* 버튼 배경색 변경 */
+    color: #D0BCBC; /* 글자색 (필요에 따라 조정) */
+    border: 2px solid #D0BCBC; /*  테두리  */
+    padding: 10px 10px; /* 버튼 내부 여백 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    cursor: pointer; /* 마우스 오버 시 포인터 변경 */
+    font-size: 20px; /* 글자 크기 */
+    font-weight: bold; /* 글씨 두껍게 */
+    font-family: Arial; /* 글씨체 변경 */
+    width: 250px; /* 박스 길이 고정 */
+    height : 50px;
+    transition: background-color 0.3s; /* 부드러운 색 변화 효과 */
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* 그림자 효과 */
+}
 /*  Waiting.pug  */
 /* 전체 컨테이너 가로 정렬 */
 #waitingContainer {
-    display: flex;
+    display: flex;           /* 추가: flex 컨테이너로 만듦 */
     justify-content: center;
     align-items: center;
     width: 100vw;
     height: 100vh;
-    gap: 50px; /* 요소 사이 간격 */
+    gap: 20px; /* 요소 사이 간격 */
+}
+ 
+ 
+#call_waiting{
+    flex-direction: row;  /* 가로 배치 */
+    align-items: flex-end; /* 세로 축(위아래)에서 상단 정렬 */
+    width: auto;  /* 내용물만큼만 차지하도록 */
+    margin: 0 auto; 
+    gap: 0px;  /* 비디오와 버튼 사이 간격 */
 }
 
-/* 영상과 버튼 컨테이너 */
-#myStream {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: auto; /* 최대 너비 조정 */
-    height: auto; /* 비율 유지 */
-    max-height: 70vh; /* 화면 높이의 70%까지만 사용 */
-    overflow: hidden; /* 넘치는 부분 숨김 */
-}
-
-/* 컨트롤 버튼 (Mute, Camera, Background) */
-#controls {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+/* 영상 컨테이너 */
+#myStream_waiting {
+    align-items: flex-end; /* 세로 축(위아래)에서 상단 정렬 */
+    flex-direction: row;
+    gap: 10px;
     margin-top: 10px;
 }
+
+/* 버튼 컨테이너 (Mute, Camera, Background) */
+#controls {
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto; /* 가로 중앙 정렬 */
+    margin-left: auto; /* 자동으로 남은 공간 밀어내기 */
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
 
 /* 버튼 */
 #mute,
@@ -254,36 +318,60 @@ p#start_p{
     padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 20px; 
+    font-weight: bold;
+    width : 250px;
     transition: background-color 0.3s;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* 가벼운 그림자 효과 */
 }
 
 /* 버튼 hover 효과 */
 #mute:hover,
 #camera:hover,
-#background:hover {
-    background-color: #BFA3A3;
+#background:hover,#enterMeeting:hover {
+    background-color: #ffffff;
+    color: #D0BCBC;
+    border: 2px solid #D0BCBC; /* 연한 테두리 */
+}
+
+select#cameras {
+    font-size: 20px;  /* 원하는 폰트 크기로 설정 */
+    padding: 5px;     /* 선택적으로 패딩을 추가 */
+    border-radius: 2px;
+
 }
 
 /* 참여 요청 박스 */
 #askEnter {
+    margin-right: auto;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 15px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-top: 10px;
+    padding-top: 30px;
+    padding-right: 0px;
+    text-align: left;
+    font-size: 25px;
 }
+
+
 
 /* "지금 참여하기" 버튼 스타일 */
 #enterMeeting {
-    margin-top: 10vw;
+    border: 1px solid #D0BCBC; /* 연한 테두리 */
     background-color: #D0BCBC;
-    border: none;
-    width: 200px;
-    height: 50px;
-    font-size: 18px;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 25px; 
     font-weight: bold;
+    width : 300px;
+    height: 80px;
     transition: background-color 0.3s;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* 가벼운 그림자 효과 */
 }
 
 
@@ -306,18 +394,16 @@ h2#roomTitle
     justify-content: center; /* 폼을 가운데 정렬 */
     flex-direction: column; /* 요소들을 세로로 정렬 */
     align-items: center; /* 세로 축 중앙 정렬 */
-    
 }
 
 #nicknameForm {
+    padding-top : 200px;
     width: 50%; /* 폼의 너비를 50%로 설정 */
     max-width: 600px; /* 최대 너비 설정 */
     display: flex;
     flex-direction: column; /* 요소들을 세로로 정렬 */
     align-items: center; /* 가로 중앙 정렬 */
 }
-
-
 
 
 /* 버튼 스타일 */
@@ -328,8 +414,6 @@ button {
 }
 
 
-
-
 /*   닉네임   */
 /* 내 비디오 닉네임 */
 .nickname-container {
@@ -337,10 +421,11 @@ button {
     top: 60px; /* 아래쪽 여백 */
     align-items: center;
     color: black; /* 글자 색상 */
-    padding: 5px 10px;
+    padding: 10px 10px;
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 20px;
     font-weight: bold;
+    font-family :Arial;
     white-space: nowrap;
     z-index: 10;
 }
@@ -351,7 +436,7 @@ button {
     top: 60px; /* 아래쪽 여백 */
     align-items: center;
     color: black; /* 글자 색상 */
-    padding: 5px 10px;
+    padding: 10px 10px;
     border-radius: 8px;
     font-size: 14px;
     font-weight: bold;
@@ -377,6 +462,7 @@ button {
     justify-content: center; /* 세로 중앙 정렬 */
     align-items: center; /* 가로 중앙 정렬 */
     height: auto; /* 화면 높이에서 100px 제외 */
+    padding-top: 20px;
     width: 100vw;
     position: fixed;
     top:0;
@@ -400,8 +486,7 @@ button {
     width: 400px;
     height: auto;
     min-height: 450px;
-    padding: 10px;
-    background-color: rgba(255, 255, 255, 0.1); /* 약간의 반투명 배경 */
+    padding: 20px;
     border-radius: 10px;
     margin: 0; /* 스트림 간 간격 추가 */
     position: relative;
@@ -435,18 +520,24 @@ video {
 
 /* 하단바 버튼 스타일 */
 #bottomBar button {
-    background-color: #767676;
-    border: none;
-    padding: 10px 15px;
+    background-color: #D0BCBC;
+    border: 1px solid #D0BCBC; /* 연한 테두리 */
     color: white;
-    font-size: 16px;
+    border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: 0.3s;
+    font-size: 20px; 
+    font-weight: bold;
+    width : 250px;
+    transition: background-color 0.3s;
+    box-shadow: 2px 2px 10px rgba(255, 255, 255, 0.1); /* 가벼운 그림자 효과 */
 }
 
 #bottomBar button:hover {
-    background-color: #BFA3A3;
+    background-color: #ffffff;
+    color :  #D0BCBC;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* 가벼운 그림자 효과 */
+
 }
 
 
@@ -471,9 +562,12 @@ video {
     vertical-align: middle;
     padding: 1em;
     max-width: 750px;
+    border-radius: 5px;
     width: 100%;
     position: relative;
     margin: 50px auto 0;
+    font-size : 30px;
+    font-family : bold;
 }
 
 /* 팝업 닫기 버튼 스타일 */
@@ -492,11 +586,34 @@ video {
 }
 
 
+#yesnoForm {
+    display: flex;            /* 가로 방향으로 버튼 배치 */
+    justify-content: center;  /* 버튼들을 수평 가운데 정렬 */
+    align-items: center;      /* 세로 방향도 가운데 정렬 (필요시) */
+    gap: 10px;                /* 버튼 사이 간격 */
+  }
+
+  #yesBtn, #noBtn{
+    background-color: #ffffff; /* 기본 배경색 */
+    color: #D0BCBC; /* 기본 글자색 */
+    border: 2px solid #D0BCBC;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight : bold;
+    font-family :Arial;
+    text-align: center; /* 텍스트를 중앙 정렬 */
+    transition: background-color 0.3s, border-color 0.3s;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* 그림자 효과 */
+  }
+  #yesBtn:hover,#noBtn:hover{
+    background-color: #D0BCBC;
+    color: white;
+  }
 
 
-
-
-/*                          privacyset page                                */
+/*privacyset page  */
 /* 토글 스위치 스타일 */
 /* 토글 스위치 스타일 */
 .switch {
