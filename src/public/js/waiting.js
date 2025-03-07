@@ -335,3 +335,178 @@ async function drawFaceBoxes() {
     }
     detectFaces();
 }
+
+// import { 
+//     setCanvasSize, 
+//     analyzeNSFWFrame, 
+//     startNSFWCheck, 
+//     applyVirtualBackground, 
+//     drawFaceBoxes,
+//     loadFaceAPIModels,
+//     faceCanvas,
+//     videoCanvas,
+//     processingCanvas,
+//     processingCtx,
+//     videoCtx,
+//     nsfwOffscreenCanvas,
+//     nsfwOffscreenCtx
+// } from "./background.js";
+
+// const myFace = document.getElementById("myFace");
+// const muteBtn = document.getElementById("mute");
+// const cameraBtn = document.getElementById("camera");
+// const camerasSelect = document.getElementById("cameras");
+// const call = document.getElementById("call");
+// const backgroundBtn = document.getElementById("background");
+
+// let myStream;
+// let muted = false;
+// let cameraOff = false;
+// let isBackgroundEnabled = false; 
+// let isExplicit = false; // NSFW 감지 결과
+
+// //background.js 용 
+// // 가상 배경 화면 설정
+// const backgroundImg = new Image();
+// backgroundImg.src = "/public/background.jpg";
+// backgroundImg.onload = () => {
+//     console.log("✅ Background image loaded");
+
+//     // 비디오가 로드된 후 applyVirtualBackground 실행
+//     if (myFace && myFace.videoWidth !== 0) {
+//         applyVirtualBackground(myFace, videoCanvas, processingCanvas, processingCtx, videoCtx, false, backgroundImg);
+//     }
+// };
+
+// // NSFW 감지를 위한 offscreen 캔버스
+
+// const nsfwCategories = ["porn", "sexy", "hentai"];
+// const nsfwThresholds = { 
+//     porn: 0.999, 
+//     sexy: 0.1,
+//     hentai: 0.3,  
+// };
+
+
+
+// // 세션 유지
+// window.addEventListener("DOMContentLoaded", () => {
+//     const storedRoomID = sessionStorage.getItem("roomID");
+//     const storedRoomName = sessionStorage.getItem("roomName");
+
+//     if (storedRoomID && storedRoomName) {
+//         console.log(`[CLIENT] Waiting Room: ${storedRoomName} (Room ID: ${storedRoomID})`);
+//     } else {
+//         console.log("❌ No meeting information found.");
+//         window.location.href = "/";
+//     }
+
+
+// });
+
+// // FaceAPI 모델 로드
+// // Promise.all([
+// //     faceapi.nets.tinyFaceDetector.loadFromUri('/public/models'),
+// //     faceapi.nets.faceLandmark68Net.loadFromUri('/public/models'),
+// //     faceapi.nets.faceRecognitionNet.loadFromUri('/public/models'),
+// //     faceapi.nets.faceExpressionNet.loadFromUri('/public/models'),
+// //     faceapi.nets.ssdMobilenetv1.loadFromUri('/public/models')
+// // ]).then(() => console.log("FaceAPI 모델 로드 완료"));
+
+
+
+// // 미디어(카메라/오디오) 설정 함수
+// async function getCameras() {
+//     try {
+//         const devices = await navigator.mediaDevices.enumerateDevices();
+//         const cameras = devices.filter(device => device.kind === "videoinput");
+//         const currentCamera = myStream.getVideoTracks()[0];
+//         camerasSelect.innerHTML = ""; // 기존 옵션 제거
+//         cameras.forEach(camera => {
+//             const option = document.createElement("option");
+//             option.value = camera.deviceId;
+//             option.innerText = camera.label;
+//             if (currentCamera.label === camera.label) {
+//                 option.selected = true;
+//             }
+//             camerasSelect.appendChild(option);
+//         });
+//     } catch (e) {
+//         console.error("카메라 목록 불러오기 실패:", e);
+//     }
+// }
+
+// async function getMedia(deviceID) {
+//     const constraints = deviceID ? 
+//         { audio: true, video: { deviceId: { exact: deviceID } } } : 
+//         { audio: true, video: { facingMode: "user" } };
+
+//     try {
+//         myStream = await navigator.mediaDevices.getUserMedia(constraints);
+//         myFace.srcObject = myStream;
+//         if (!deviceID) await getCameras();
+//     } catch (e) {
+//         console.error("미디어 스트림 가져오기 실패:", e);
+//     }
+// }
+
+// function handleMuteClick() {
+//     myStream.getAudioTracks().forEach(track => track.enabled = !track.enabled);
+//     muted = !muted;
+//     muteBtn.innerText = muted ? "Unmute" : "Mute";
+// }
+
+// function handleCameraClick() {
+//     myStream.getVideoTracks().forEach(track => track.enabled = !track.enabled);
+//     cameraOff = !cameraOff;
+//     cameraBtn.innerText = cameraOff ? "Turn Camera On" : "Turn Camera Off";
+// }
+
+// function handleBackgroundClick() {
+//     isBackgroundEnabled = !isBackgroundEnabled;
+//     backgroundBtn.innerText = isBackgroundEnabled ? "Turn Background Off" : "Turn Background On";
+// }
+// async function handleCameraChange() {
+//     await getMedia(camerasSelect.value);
+// }
+
+
+
+// muteBtn.addEventListener("click", handleMuteClick);
+// cameraBtn.addEventListener("click", handleCameraClick);
+// backgroundBtn.addEventListener("click", () => {
+//     isBackgroundEnabled = !isBackgroundEnabled;
+//     backgroundBtn.innerText = isBackgroundEnabled ? "Turn Background Off" : "Turn Background On";
+//     console.log(`Background ${isBackgroundEnabled ? "On" : "Off"}`);
+
+//     // ✅ 배경 상태 변경 시 applyVirtualBackground 재호출
+//     applyVirtualBackground(myFace, videoCanvas, processingCanvas, processingCtx, videoCtx, isBackgroundEnabled, backgroundImg);
+// });
+// camerasSelect.addEventListener("change", handleCameraChange);
+// document.getElementById('enterMeeting').addEventListener('click', () => {
+//     window.location.href = '/meeting';
+// });
+// getMedia();
+
+
+
+
+
+// myFace.insertAdjacentElement("afterend", videoCanvas);
+
+// window.addEventListener("load", async () => {
+//     await loadFaceAPIModels();
+//     await startNSFWCheck();
+// });
+
+// // 가상 배경 적용
+// myFace.addEventListener("loadedmetadata", () => {
+//     console.log("✅ 비디오 메타데이터 로드 완료");
+//     setCanvasSize(myFace);
+//     drawFaceBoxes(myFace, videoCanvas);
+// });
+// myFace.addEventListener("loadedmetadata", setCanvasSize);
+
+// // 창 크기 변경 시 캔버스 크기 업데이트
+// window.addEventListener("resize", () => setCanvasSize(myFace));
+

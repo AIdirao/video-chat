@@ -466,13 +466,32 @@ function makeConnection() {
     const filteredStream = videoCanvas.captureStream();
 
     // 원본 스트림에서 오디오 트랙을 가져와 추가 (필터링 처리는 하지 않으므로)
-    if (myStream) {
-        myStream.getAudioTracks().forEach(track => {
-            myPeerConnection.addTrack(track, myStream);
-        });
-    } else {
-        console.error("makeConnection() 실행 시 myStream이 정의되지 않음");
-    }
+
+    myPeerConnection = new RTCPeerConnection({
+        iceServers: [
+            {
+                urls: [
+                    "stun:stun.l.google.com:19302",
+                ],
+            },
+            {
+                urls: "turn:15.164.211.147:3478",
+                username: "user",
+                credential: "661a478250484e2572c90d0f5506acbd7d0c0aebb9a8e2e81f95efed8b554ee2"
+            },
+            {
+                urls: "turns:15.164.211.147:5349",
+                username: "user",
+                credential: "661a478250484e2572c90d0f5506acbd7d0c0aebb9a8e2e81f95efed8b554ee2"
+            },
+        ],
+    });
+
+    console.log("RTCPeerConnection created", myPeerConnection);
+
+    myPeerConnection.addEventListener("icecandidate", handleIce);
+    myPeerConnection.addEventListener("track", handleTrack);
+
 
     // 캡처한 필터링된 스트림에서 비디오 트랙을 추가
     if (filteredStream) {
