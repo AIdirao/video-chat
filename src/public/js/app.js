@@ -475,8 +475,15 @@ function makeConnection() {
                 ],
             },
             {
-                urls: "turn:52.79.72.173:3478"
-            }
+                urls: "turn:15.164.211.147:3478",
+                username: "user",
+                credential: "661a478250484e2572c90d0f5506acbd7d0c0aebb9a8e2e81f95efed8b554ee2"
+            },
+            {
+                urls: "turns:15.164.211.147:5349",
+                username: "user",
+                credential: "661a478250484e2572c90d0f5506acbd7d0c0aebb9a8e2e81f95efed8b554ee2"
+            },
         ],
     });
 
@@ -549,4 +556,3 @@ document.querySelectorAll(".popup").forEach(popup => {
         }
     });
 });
-
