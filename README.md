@@ -1,3 +1,3 @@
 # Aidiraoom
 
-Zoom Clone using NodeJS, WebRTC and Websockets
+AI-dirao는 AI 기반 모자이크 기술로 외부인과 신체 노출을 실시간 차단하여 프라이버시를 보호하는 보안 강화 화상 회의 플랫폼입니다.
