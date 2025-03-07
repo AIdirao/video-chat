@@ -112,14 +112,12 @@ async function handleCameraChange() {
     await getMedia(camerasSelect.value);
 }
 
-
-
 muteBtn.addEventListener("click", handleMuteClick);
 cameraBtn.addEventListener("click", handleCameraClick);
 backgroundBtn.addEventListener("click", handleBackgroundClick);
 camerasSelect.addEventListener("change", handleCameraChange);
 document.getElementById('enterMeeting').addEventListener('click', () => {
-    window.location.href = '/meeting';
+    window.location.href = `/meeting?muted=${encodeURIComponent(muted)}&cameraoff=${encodeURIComponent(cameraOff)}&isBackgroundEnabled=${encodeURIComponent(isBackgroundEnabled)}`;
 });
 getMedia();
 
