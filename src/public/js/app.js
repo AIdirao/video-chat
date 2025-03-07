@@ -58,6 +58,9 @@ const nsfwThresholds = {
 window.addEventListener("DOMContentLoaded", () => {
     roomID = sessionStorage.getItem("roomID");
     roomName = sessionStorage.getItem("roomName"); 
+
+    const faceurl = localStorage.getItem("uploadedFaceUrl");
+    console.log(`세션 유지 - faceurl: ${faceurl}`);
     if (roomID) {
         meetingCodeDisplay.innerText = `회의 코드: ${roomID}`;
     } else {
@@ -310,20 +313,36 @@ applyVirtualBackground();
 
 async function loadReferenceImage() {
     try {
-        const img = await faceapi.fetchImage('/public/myFace.jpg');
-        const detection = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
-        if (!detection) {
-            console.error("참조 이미지에서 얼굴 감지 실패.");
+        // localStorage에서 가져오기
+        const faceUrl = localStorage.getItem("uploadedFaceUrl");
+
+        if (!faceUrl) {
+            console.error("저장된 참조 이미지 URL이 없습니다.");
             return null;
         }
+
+        console.log("불러온 참조 이미지 URL:", faceUrl);
+
+        const img = await faceapi.fetchImage(faceUrl);
+        const detection = await faceapi.detectSingleFace(img)
+            .withFaceLandmarks()
+            .withFaceDescriptor();
+
+        if (!detection) {
+            console.error(" 참조 이미지에서 얼굴 감지 실패.");
+            return null;
+        }
+
         return new faceapi.FaceMatcher(detection, 0.45);
     } catch (error) {
-        console.error("참조 이미지 로드 오류:", error);
+        console.error(" 참조 이미지 로드 오류:", error);
         return null;
     }
 }
 
+
 async function drawFaceBoxes() {
+    const faceUrl = localStorage.getItem("uploadedFaceUrl");
     const faceMatcher = await loadReferenceImage();
     if (!faceMatcher) {
         console.error("FaceMatcher 로드 실패");

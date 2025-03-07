@@ -56,6 +56,19 @@ async function uploadFile(file) {
 
         if (uploadResponse.ok) {
             console.log(`업로드 성공! S3 URL: ${fileUrl}`);
+
+            // ✅ localStorage에 저장하기 전에 값 확인
+            if (fileUrl) {
+                console.log("📌 저장할 S3 URL:", fileUrl);
+                localStorage.setItem("uploadedFaceUrl", fileUrl);
+
+                // ✅ 저장 후 확인
+                console.log("📌 저장된 값:", localStorage.getItem("uploadedFaceUrl"));
+            } else {
+                console.error("❌ 저장할 URL이 존재하지 않습니다.");
+            }
+
+
             return fileUrl;
         } else {
             console.error("업로드 실패:", uploadResponse.status, uploadResponse.statusText);
@@ -77,10 +90,7 @@ function urlpass(url){
 document.addEventListener("DOMContentLoaded", function () {
 
     /* page routing */
-    document.getElementById('waitingroomBtn').addEventListener('click', function () {
-        window.location.href = '/waiting';
-    });
-    document.getElementById('goToMainButton').addEventListener('click', function () {
+    document.getElementById('joinCamBtn').addEventListener('click', function () {
         window.location.href = '/';
     });
 
