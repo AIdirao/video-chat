@@ -476,9 +476,6 @@ function makeConnection() {
             },
             {
                 urls: "turn:52.79.72.173:3478"
-            },
-            {
-                urls: "turns:52.79.72.173:5349"
             }
         ],
     });
