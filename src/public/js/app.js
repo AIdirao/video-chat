@@ -298,6 +298,13 @@ async function applyVirtualBackground() {
                 videoCtx.drawImage(censoredImg, 0, 0, videoCanvas.width, videoCanvas.height);
             };
         }
+
+        if (faceBoxes.length > 0) {
+            videoCtx.fillStyle = 'white';
+            faceBoxes.forEach(box => {
+                videoCtx.fillRect(box.x, box.y, box.width, box.height);
+            });
+        }
     });
 
     // WebGL 컨텍스트 손실 복구
@@ -341,49 +348,50 @@ async function loadReferenceImage() {
 }
 
 
+// 전역에서 선언
+let faceBoxes = [];
+
 async function drawFaceBoxes() {
-    const faceUrl = localStorage.getItem("uploadedFaceUrl");
     const faceMatcher = await loadReferenceImage();
     if (!faceMatcher) {
         console.error("FaceMatcher 로드 실패");
         return;
     }
-    const canvas = faceapi.createCanvasFromMedia(myFace);
-    videoCanvas.parentElement.appendChild(canvas);
-    canvas.style.position = "absolute";
-    canvas.style.top = videoCanvas.offsetTop + "px";
-    canvas.style.left = videoCanvas.offsetLeft + "px";
-    canvas.width = videoCanvas.width;
-    canvas.height = videoCanvas.height;
+
     const displaySize = { width: videoCanvas.width, height: videoCanvas.height };
-    faceapi.matchDimensions(canvas, displaySize);
-    
+    faceapi.matchDimensions(videoCanvas, displaySize);
+
     async function detectFaces() {
         const detections = await faceapi.detectAllFaces(myFace)
             .withFaceLandmarks()
             .withFaceDescriptors();
+
         const resizedDetections = faceapi.resizeResults(detections, displaySize);
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // ✅ 박스 정보만 저장
+        faceBoxes = []; // 이전 박스 초기화
         resizedDetections.forEach(detection => {
             const box = detection.detection.box;
-            const reversedX = canvas.width - (box.x + box.width);
+            const reversedX = videoCanvas.width - (box.x + box.width);
             const reversedBox = {
                 x: reversedX,
                 y: box.y,
                 width: box.width,
                 height: box.height
             };
+
             const bestMatch = faceMatcher.findBestMatch(detection.descriptor);
             if (bestMatch.label === "unknown") {
-                ctx.fillStyle = 'white';
-                ctx.fillRect(reversedBox.x, reversedBox.y, reversedBox.width, reversedBox.height);
+                faceBoxes.push(reversedBox);
             }
         });
-        setTimeout(detectFaces); // 200ms마다 얼굴 감지
+
+        setTimeout(detectFaces, 200);
     }
+
     detectFaces();
 }
+
 
 
 // 닉네임 입력
