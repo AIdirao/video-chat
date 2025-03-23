@@ -29,8 +29,8 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            git pull origin main
             cd ~/video-chat
+            git pull origin main
             npm install
             pm2 stop video-chat || true
             pm2 delete video-chat || true
