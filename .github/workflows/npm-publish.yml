@@ -32,6 +32,8 @@ jobs:
             cd ~/video-chat
             git pull origin main
             npm install
-            pm2 start npm --name video-chat -- run dev || pm2 restart video-chat
+            pm2 stop video-chat || true
+            pm2 delete video-chat || true
+            pm2 start npm --name video-chat -- run dev
 
 
