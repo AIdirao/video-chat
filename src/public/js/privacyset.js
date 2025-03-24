@@ -88,6 +88,37 @@ function urlpass(url){
 
 
 document.addEventListener("DOMContentLoaded", function () {
+    const consentModal = document.getElementById("consentModal");
+    const agreeBtn = document.getElementById("agreeConsent");
+    const declineBtn = document.getElementById("declineConsent");
+
+    const requiredCheckbox = document.getElementById("requiredConsent");
+
+    const consentKey = "privacyConsentGiven";
+
+    // 팝업 표시 조건
+    if (!localStorage.getItem(consentKey)) {
+        consentModal.style.display = "flex";
+        document.body.style.overflow = "hidden";
+    }
+
+    agreeBtn.addEventListener("click", () => {
+        if (!requiredCheckbox.checked) {
+            alert("필수 항목에 동의해야 서비스를 이용할 수 있습니다.");
+            return;
+        }
+
+        // 저장: 필수 항목은 무조건 true, 선택은 체크 여부
+        localStorage.setItem(consentKey, "true");
+
+        consentModal.style.display = "none";
+        document.body.style.overflow = "auto";
+    });
+
+    declineBtn.addEventListener("click", () => {
+        alert("서비스 이용을 위해 개인정보 수집에 동의가 필요합니다.");
+        window.location.href = "http://localhost:3000"; // 혹은 로그인 페이지로
+    });
 
     /* page routing */
     document.getElementById('joinCamBtn').addEventListener('click', function () {

@@ -813,3 +813,73 @@ html, body {
         flex: 1 0 85%; /* 데스크톱에서는 컨텐츠가 나머지 85% 차지 */
     }
 }
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    overflow-y: auto;
+    max-height: 90vh;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+
+.modal-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+}
+
+.modal-content table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 8px;
+    text-align: center;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+    gap: 1rem;
+}
+
+.modal-buttons button {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+#agreeConsent {
+    background-color: #D0BCBC;
+    color: white;
+}
+
+#declineConsent {
+    background-color: #e5e7eb;
+    color: #111827;
+}
