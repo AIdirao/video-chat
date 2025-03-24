@@ -1,8 +1,9 @@
 /* 전체 페이지 컨테이너 스타일 */
 body, html {
-    height: 100%;
+    max-width: 100%; /* 전체 화면이 너무 넓어지는 걸 방지 */
+    width: auto;
     margin: 0;
-    padding: 0;
+    padding-top: 20px;
     display: flex;
     flex-direction: column; /* 방향을 컬럼으로 변경 */
     overflow: hidden; 
@@ -34,11 +35,42 @@ header {
 
 /* main 내부의 위치 조정 */
 main {
-    margin-top: 60px; /* 헤더의 높이보다 약간 더 큰 값을 주어 헤더 아래에 위치하도록 함 */
-    width: 100%; /* 전체 너비를 사용하도록 설정 */
+    padding: 20px;
+    /* margin-top: 30px; */
+    max-width: 100%; /* 전체 너비를 사용하도록 설정 */
+    width: auto;
 }
 
 /* start.pug */
+
+/* 메인 컨텐츠 영역 스타일 */
+.startContent{
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    width: 100vw;
+    height: 100vh;
+    padding: 20px;
+    /* margin-right: 15vw; */
+    max-width: 100vw;
+}
+
+h2#start_title {
+    font-size: 35px;
+    font-weight: bold;
+    text-align: center; 
+    padding-left: 10px;
+    padding-right: 10px;
+}
+p#start_p{
+    text-align: center; 
+    margin-bottom: 50px;
+    font-size: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-weight: bold;
+}
+
 /* 가운데 정렬 */
 /* 스마트 회의 참가 영역 스타일 */
 #smartJoin {
@@ -48,7 +80,11 @@ main {
     justify-content: center;
     text-align: center;
     width: 100%;
-    margin-bottom: 60px;
+    height: 100%;
+    /* margin-bottom: 60px; */
+    padding: 10px;
+    margin-top: 10px;
+    margin-left: 20vw;
 }
 
 /* 폼을 가로로 정렬 */
@@ -57,7 +93,10 @@ main {
     gap: 20px; /* 폼 간 간격 설정 */
     justify-content: center;
     align-items: center;
-    flex-wrap: wrap; /* 화면이 작아지면 줄 바꿈 */
+    flex-wrap: wrap; 
+    max-width: 1000px;
+    min-width: 300px; 
+    padding: 10px;
 }
 
 /* 각 폼의 스타일 */
@@ -77,6 +116,8 @@ main {
     display: flex;
     justify-content: center;
     width: 100%;
+    padding: 10px;
+    margin-right: 15px;
 }
 
 #visualContainer img {
@@ -102,14 +143,13 @@ main {
 h1#aidirao {
     text-align: center; /* 텍스트 가운데 정렬 */
     width: 100%; /* 전체 너비를 차지하도록 설정 */
+    font-size: 30px;
 }
 
 /* 버튼 */
 /* 기본 버튼 스타일 */
 #joinCamBtn, 
 #privacyModeBtn,
-#enterCodeForm input,
-#createMeetingForm input,
 #nicknameinput /* meeting.pug */
 {
     background-color: #ffffff; /* 기본 배경색 */
@@ -119,12 +159,29 @@ h1#aidirao {
     border-radius: 5px;
     cursor: pointer;
     font-size: 20px;
-    font-weight : bold;
+    /* font-weight : bold; */
+    font-family :Arial;
+    text-align: center; /* 텍스트를 중앙 정렬 */
+    transition: background-color 0.3s, border-color 0.3s;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+#enterCodeForm input,
+#createMeetingForm input
+{
+    background-color: #ffffff; /* 기본 배경색 */
+    color: #D0BCBC; /* 기본 글자색 */
+    border: 2px solid #D0BCBC;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+    /* font-weight : bold; */
     font-family :Arial;
     text-align: center; /* 텍스트를 중앙 정렬 */
     transition: background-color 0.3s, border-color 0.3s;
     box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* 그림자 효과 */
-
+    width: 200px;
 }
 
 /* start.pug에서는 joinCamBtn 색상을 변경 */
@@ -172,70 +229,94 @@ body[data-page="privacyset"] #privacyModeBtn:hover {
     border-radius: 5px; /* 모서리 둥글게 */
     cursor: pointer; /* 마우스 오버 시 포인터 변경 */
     font-size: 20px; /* 글자 크기 */
-    font-weight: bold; /* 글씨 두껍게 */
+    /* font-weight: bold;  */
     font-family: Arial; /* 글씨체 변경 */
-    width: 250px; /* 박스 길이 고정 */
+    width: 200px; /* 박스 길이 고정 */
     height : 50px;
     transition: background-color 0.3s; /* 부드러운 색 변화 효과 */
     box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* 그림자 효과 */
 }
 
 
-/* 메인 컨텐츠 영역 스타일 */
-.startContent,
-#checkfiltering
-{
-    margin-left: 15vw; /* 사이드바 너비만큼 왼쪽 여백 */
-    display: flex;
-    flex-direction: column;
-    border-radius: 5px; /* 모서리 둥글게 */
-    justify-content: center; /* 세로 중앙 정렬 */
-    align-items: center; /* 가로 중앙 정렬 */
-    width: calc(100vw - 15vw); /* 전체 화면 너비에서 사이드바 너비를 제외 */
-    height: 100vh; /* 전체 높이 설정 */
-}
-
-
-h2#start_title {
-    font-size:45px;
-    font-weight: bold;
-    text-align: center; 
-    margin-bottom: 15px;
-}
-p#start_p{
-    text-align: center; 
-    margin-bottom: 50px;
-    font-size: 20px;
-    padding-top: 10px;
-    padding-bottom: 20px;
-    font-weight: bold;
-}
 
 /* privacyset.pug */
+.choosefacefilter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+}
+
 #checkfiltering {
     background-color: #D0BCBC;
     color: white;
-    margin-left: 15vw; /* 사이드바 너비만큼 왼쪽 여백 */
-    padding-left: 50px;
+    overflow: hidden;
+    width: 100%;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center; 
-    font-size : 25px;
-    width: 85vw; 
-    height: 100vh;
-    overflow: hidden;
+    border-radius: 5px; 
+    justify-content: center; 
+    align-items: center;
+    /* width: calc(90vw - 15vw);  */
+    margin-left: 15vw;
+    height: 100%;
 }
+
+#checkfiltering h3 {
+    font-size: 30px;
+    font-weight: bold; /* 글자 굵기 조정 (선택사항) */
+}
+
 .privacyset-box {
     background-color: #ffffff; /* 배경 흰색 */
     color : black;
     border-radius: 10px; /* 모서리 둥글게 */
     border: 1px solid #D0BCBC; /* 연한 테두리 */
-    padding: 20px; /* 내부 여백 */
-    width: 90%; /* 너비 조정 */
-    max-width: 1000px; /* 최대 너비 */
+    padding: 30px; /* 내부 여백 */
+    width: 80%;
+    max-width: 100%; 
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* 가벼운 그림자 효과 */
     margin: 0; /* 모든 여백을 0으로 설정하여 페이지의 왼쪽에 붙임 */
+}
+
+.filtering-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px; /* 글자와 버튼 간 간격 */
+    margin-bottom: 20px;
+    padding-bottom: 20px; /* Adds space for the line */
+
+    border-bottom: 2px solid #D0BCBC; 
+
+}
+
+.filtering-option h6 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.face-upload-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.face-upload-option h6 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.upload-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* 입력란과 버튼 사이 간격 */
 }
 
 .toggle-container,#faceUpload{
@@ -245,14 +326,20 @@ p#start_p{
     padding: 10px 20px; /* 버튼 내부 여백 */
     border-radius: 5px; /* 모서리 둥글게 */
     cursor: pointer; /* 마우스 오버 시 포인터 변경 */
-    font-size: 20px; /* 글자 크기 */
-    font-weight: bold; /* 글씨 두껍게 */
-    font-family: Arial; /* 글씨체 변경 */
-    width:auto; /* 박스 길이 고정 */
+    font-size: 15px; /* 글자 크기 */
+    width: auto; /* 박스 길이 고정 */
+    max-width: 100%;
     height : auto;
     transition: background-color 0.3s; /* 부드러운 색 변화 효과 */
     box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* 그림자 효과 */
+    white-space: normal; /* 텍스트가 버튼 밖으로 나가지 않도록 줄 바꿈 허용 */
+    display: inline-block; /* 버튼들이 나란히 배치되도록 설정 */
+    text-align: center; /* 텍스트를 중앙 정렬 */
+    word-wrap: break-word; /* 긴 단어가 잘리도록 처리 */
+    margin-right: 10px;
+
 }
+
 #faceuploadinitializate{
     background-color: white; /* 버튼 배경색 변경 */
     color: #D0BCBC; /* 글자색 (필요에 따라 조정) */
@@ -260,14 +347,19 @@ p#start_p{
     padding: 10px 10px; /* 버튼 내부 여백 */
     border-radius: 5px; /* 모서리 둥글게 */
     cursor: pointer; /* 마우스 오버 시 포인터 변경 */
-    font-size: 20px; /* 글자 크기 */
-    font-weight: bold; /* 글씨 두껍게 */
+    font-size: 15px; /* 글자 크기 */
     font-family: Arial; /* 글씨체 변경 */
-    width: 250px; /* 박스 길이 고정 */
+    width: auto; /* 박스 길이 고정 */
+    max-width: 70%;
     height : 50px;
     transition: background-color 0.3s; /* 부드러운 색 변화 효과 */
     box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* 그림자 효과 */
+    white-space: normal; /* 텍스트가 버튼 밖으로 나가지 않도록 줄 바꿈 허용 */
+    display: inline-block; /* 버튼들이 나란히 배치되도록 설정 */
+    text-align: center; /* 텍스트를 중앙 정렬 */
+
 }
+
 /*  Waiting.pug  */
 /* 전체 컨테이너 가로 정렬 */
 #waitingContainer {
@@ -699,12 +791,17 @@ html, body {
 /* 반응형 미디어 쿼리 */
 @media (max-width: 600px) {
     .sidebar, .content {
+        flex-grow: 0;
         flex: 1; /* 사이드바와 컨텐츠가 화면의 50%씩 차지 */
-        width: 100%; /* 모바일 화면에서는 전체 너비 사용 */
-        position: relative; /* 고정 위치 해제 */
+        width: 30%;
+        /* position: relative; 고정 위치 해제 */
     }
     .content {
         margin-left: 0; /* 사이드바 너비 제거 */
+    }
+    .main {
+        display: block; /* 모바일에서도 main이 보이도록 설정 */
+        width: 70%; /* 전체 화면 사용 */
     }
 }
 
