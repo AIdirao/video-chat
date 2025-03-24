@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     declineBtn.addEventListener("click", () => {
         alert("서비스 이용을 위해 개인정보 수집에 동의가 필요합니다.");
-        window.location.href = "http://localhost:3000"; // 혹은 로그인 페이지로
+        window.location.href = "https://www.aidirao.shop"; // 혹은 로그인 페이지로
     });
 
     /* page routing */
