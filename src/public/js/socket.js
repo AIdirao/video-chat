@@ -1,8 +1,2 @@
-
-
-const socket = io("ws://15.164.211.147:3000", { 
-    transports: ["websocket"], // 🚀 WebSocket 전용
-    upgrade: false, // 🚀 polling 차단 (WebSocket만 사용)
-});
-
+const socket = io(); // 서버에서 자동으로 클라이언트 라이브러리를 제공
 export default socket;

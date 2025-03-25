@@ -24,7 +24,7 @@ myFace.insertAdjacentElement("afterend", videoCanvas);
 
 // 가상 배경 화면 설정
 const backgroundImg = new Image();
-backgroundImg.src = "/public/background.jpg";
+backgroundImg.src = "/public/background.png";
 backgroundImg.onload = () => console.log("Background image loaded");
 
 // NSFW 감지를 위한 offscreen 캔버스

@@ -6,6 +6,7 @@ body, html {
     display: flex;
     flex-direction: column; /* 방향을 컬럼으로 변경 */
     overflow: hidden; 
+    zoom:100%;
 }
 
 
