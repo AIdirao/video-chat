@@ -7,7 +7,34 @@ html(lang="en")
         //link(rel="stylesheet", href="https://unpkg.com/mvp.css")
         link(rel="stylesheet", href="/public/css/start.css")
     body(data-page="privacyset")
-        main
+        div#consentModal.modal
+            div.modal-content
+                h2 개인정보 수집 및 이용 동의
+                p 본 서비스는 얼굴 인식 및 필터링 기능 제공을 위해 아래와 같은 정보를 수집합니다.
+
+                table
+                    thead
+                        tr
+                            th 항목
+                            th 목적
+                            th 보유·이용기간
+                            th 동의여부
+                    tbody
+                        tr
+                            td 얼굴정보<br>(특징정보)
+                            td 이용자 식별 및 본인 인증
+                            td 회원탈퇴 시까지
+                            td
+                                label
+                                    input(type="checkbox" id="requiredConsent")
+                                    | 동의함
+
+                p ※ 위 항목은 서비스 제공에 반드시 필요하며, 동의하지 않으면 얼굴 필터 기능을 사용할 수 없습니다.
+
+                div.modal-buttons
+                    button#agreeConsent 동의하고 계속하기
+                    button#declineConsent 동의하지 않음
+
         div.sidebar   
                 h1#aidirao AI-dira🌐             
                 button(id="joinCamBtn") Join Cam
@@ -16,21 +43,19 @@ html(lang="en")
             div#checkfiltering
                 h3 Privacy를 고려한 얼굴 필터링 기능
                 div.privacyset-box  
-                    div
-                    h5 설정한 얼굴만 화면에 노출됩니다.
-                    button.toggle-container
-                        span 필터링 기능 설정
+                    div.filtering-option
+                        h6 필터링 기능<br>설정한 얼굴만 화면에 노출됩니다.   
                         label.switch(for="filterToggle") 
                             input(type="checkbox" id="filterToggle")
                             span.slider
-                    
-                    h4       
-                    h5 허용할 얼굴 사진 업로드 (최대 10명)
-                    h5 *최대한 정면을 바라보고 찍으세요
-                    input(type="file" id="faceUpload" accept="image/*" multiple) 
-                    button(id="faceuploadinitializate") 업로드 사진 초기화
+                    div
+                    div.face-upload-option 
+                        h6 얼굴 사진 업로드 <br>최대한 정면을 바라본 사진을 사용하세요
+                        div.upload-contianer
+                            input(type="file" id="faceUpload" accept="image/*" multiple) 
+                            button(id="faceuploadinitializate") 사진 초기화
+                    div
                     div#previewContainer
-
         
             //- div#recordSetting
             //-     h3 화면녹화 설정
