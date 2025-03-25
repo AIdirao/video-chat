@@ -1,6 +1,4 @@
 import socket from "./socket.js"; 
-import dotenv from "dotenv";
-dotenv.config(); 
 
 
 const myFace = document.getElementById("myFace");
@@ -507,12 +505,12 @@ function makeConnection() {
             {
                 urls: "turn:15.164.211.147:3478",
                 username: "user",
-                credential: TURN_CREDENTIAL
+                credential: "661a478250484e2572c90d0f5506acbd7d0c0aebb9a8e2e81f95efed8b554ee2"
             },
             {
                 urls: "turns:15.164.211.147:5349",
                 username: "user",
-                credential: TURN_CREDENTIAL
+                credential: "661a478250484e2572c90d0f5506acbd7d0c0aebb9a8e2e81f95efed8b554ee2"
             },
         ],
     });
