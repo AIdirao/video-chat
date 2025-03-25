@@ -22,7 +22,7 @@ myFace.insertAdjacentElement("afterend", videoCanvas);
 
 // 가상 배경 화면 설정
 const backgroundImg = new Image();
-backgroundImg.src = "/public/background.jpg";
+backgroundImg.src = "/public/background.png";
 backgroundImg.onload = () => console.log("Background image loaded");
 
 // 얼굴 감지를 위한 별도 캔버스 (최적화를 위해 주기적 감지)
