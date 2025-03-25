@@ -7,7 +7,7 @@ body, html {
     display: flex;
     flex-direction: column; /* 방향을 컬럼으로 변경 */
     overflow: hidden; 
-    zoom:100%;
+    font-size:90%
 }
 
 
@@ -144,7 +144,7 @@ p#start_p{
 h1#aidirao {
     text-align: center; /* 텍스트 가운데 정렬 */
     width: 100%; /* 전체 너비를 차지하도록 설정 */
-    font-size: 30px;
+    font-size: 25px;
 }
 
 /* 버튼 */
@@ -161,6 +161,7 @@ h1#aidirao {
     cursor: pointer;
     font-size: 20px;
     /* font-weight : bold; */
+    font-size:inherit;
     font-family :Arial;
     text-align: center; /* 텍스트를 중앙 정렬 */
     transition: background-color 0.3s, border-color 0.3s;
@@ -178,6 +179,7 @@ h1#aidirao {
     cursor: pointer;
     font-size: 20px;
     /* font-weight : bold; */
+    font-size:inherit;
     font-family :Arial;
     text-align: center; /* 텍스트를 중앙 정렬 */
     transition: background-color 0.3s, border-color 0.3s;
@@ -231,6 +233,7 @@ body[data-page="privacyset"] #privacyModeBtn:hover {
     cursor: pointer; /* 마우스 오버 시 포인터 변경 */
     font-size: 20px; /* 글자 크기 */
     /* font-weight: bold;  */
+    font-size:inherit;
     font-family: Arial; /* 글씨체 변경 */
     width: 200px; /* 박스 길이 고정 */
     height : 50px;
@@ -296,8 +299,9 @@ body[data-page="privacyset"] #privacyModeBtn:hover {
 }
 
 .filtering-option h6 {
+    font-size:18px;
     margin: 0;
-    font-size: 20px;
+    /*font-size: 20px;*/
     font-weight: normal;
 }
 
@@ -309,8 +313,9 @@ body[data-page="privacyset"] #privacyModeBtn:hover {
 }
 
 .face-upload-option h6 {
+    font-size:18px;
     margin: 0;
-    font-size: 20px;
+    /*font-size: 20px;*/
     font-weight: normal;
 }
 
@@ -411,7 +416,7 @@ body[data-page="privacyset"] #privacyModeBtn:hover {
     padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 20px; 
+    font-size: inherit;
     font-weight: bold;
     width : 250px;
     transition: background-color 0.3s;
@@ -428,7 +433,7 @@ body[data-page="privacyset"] #privacyModeBtn:hover {
 }
 
 select#cameras {
-    font-size: 20px;  /* 원하는 폰트 크기로 설정 */
+    font-size: inherit;  /* 원하는 폰트 크기로 설정 */
     padding: 5px;     /* 선택적으로 패딩을 추가 */
     border-radius: 2px;
 
@@ -446,7 +451,7 @@ select#cameras {
     padding-top: 30px;
     padding-right: 0px;
     text-align: left;
-    font-size: 25px;
+    font-size: 20px;
 }
 
 
@@ -459,7 +464,7 @@ select#cameras {
     padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 25px; 
+    font-size: inherit; 
     font-weight: bold;
     width : 300px;
     height: 80px;
@@ -514,7 +519,7 @@ button {
     color: black; /* 글자 색상 */
     padding: 10px;
     border-radius: 8px;
-    font-size: 20px;
+    font-size: inherit;
     font-weight: bold;
     font-family: Arial;
     white-space: nowrap;
@@ -530,14 +535,14 @@ button {
     color: black; /* 글자 색상 */
     padding: 10px 10px;
     border-radius: 8px;
-    font-size: 14px;
+    font-size: inherit;
     font-weight: bold;
     white-space: nowrap;
     z-index: 10;
 }
 #peerNickname {
     display: none; /* 기본적으로 숨김 */
-    font-size: 18px;
+    font-size: inherit;
     font-weight: bold;
     color: #333;
 }
@@ -554,14 +559,14 @@ button {
     flex-wrap: wrap; /* 줄 바꿈 */
     justify-content: center; /* 가로 중앙 정렬 */
     align-items: flex-start; /* 세로 상단 정렬 */
-    height: auto; /* 자동 높이 */
-    padding-top: 80px; /* 헤더와 겹치지 않도록 여백 */
-    padding-bottom: 120px; /* 하단바와 겹치지 않도록 여백 */
-    width: 100%;
+    /*width:60%;*/
+    padding-top: 100px; /* 헤더와 겹치지 않도록 여백 */
+    padding-bottom: 100px; /* 하단바와 겹치지 않도록 여백 */
     margin: 0 auto; /* 가로 중앙 정렬 */
     gap: 20px; /* 스트림 간 간격 */
-    overflow-y: auto; /* 세로 스크롤 가능 */
-}
+    /*min-height: calc(100vh - 160px); /* 전체 높이에서 헤더, 푸터 제외 */
+    box-sizing: border-box;
+}    
 
 /* #call_meeting 활성화 시 표시 */
 #call_meeting:not([hidden]){
@@ -573,22 +578,19 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* 내부 요소 상단 정렬 */
-    width: auto;
-    height: auto;
-    min-height: 450px;
-    padding: 20px;
+    justify-content: flex-start;
+    width: 80%;
+    height: 80%;
+    padding: 10px;
     border-radius: 10px;
-    margin: 0; /* 스트림 간 간격 추가 */
     position: relative;
     flex-grow: 0;
-    overflow: hidden; /* 내부 요소가 겹치지 않도록 */
+    overflow: hidden;
 }
 
 /* 비디오 스타일 */
 video {
-    width: 100%;
-    height: auto;
+    /*width: 60%;*/
     border-radius: 5px;
     margin-top: 40px; /* 닉네임과 겹치지 않도록 여백 */
 }
@@ -618,7 +620,7 @@ video {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 20px; 
+    font-size: inherit; 
     font-weight: bold;
     width : 250px;
     transition: background-color 0.3s;
@@ -668,7 +670,7 @@ html, body {
     width: 100%;
     position: relative;
     margin: 50px auto 0;
-    font-size : 30px;
+    font-size : inherit;
     font-family : bold;
 }
 
@@ -702,7 +704,7 @@ html, body {
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 20px;
+    font-size: inherit;
     font-weight : bold;
     font-family :Arial;
     text-align: center; /* 텍스트를 중앙 정렬 */
