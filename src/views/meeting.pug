@@ -6,10 +6,7 @@ html(lang="en")
         title Aidirao
         link(rel="stylesheet", href="/public/css/start.css")
         script(src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.7.4")
-    body
-        header
-            h1#meeting AI-dira🌐 
-            h2#roomTitle RoomName loading...
+    body(class="meeting-page")            
         main
             div#welcome
                 form#nicknameForm
@@ -18,16 +15,22 @@ html(lang="en")
 
             div#call_meeting(hidden)
                 div#myStream
+                    .video-wrapper
+                        video#myFace(autoplay, playsinline)
+                        canvas#videoCanvas
                     div.nickname-container
-                        span#nickname nickname  
-                    video#myFace(autoplay, playsinline, width="400", height="400")
+                        span#nickname nickname
+                    
 
                 div#peerStream
                     div.peer-nickname-container
                         span#peerNickname peer
-                    video#peerFace(autoplay, playsinline, width="400", height="400")
+                    .video-wrapper
+                        video#peerFace(autoplay, playsinline)
+                        canvas#peerCanvas
 
-                
+
+                h2#roomTitle RoomName loading...
                 footer#bottomBar
                     button#mute Mute
                     button#camera Turn Camera Off

@@ -254,7 +254,7 @@ body[data-page="privacyset"] #privacyModeBtn:hover {
 }
 
 #checkfiltering {
-    background-color: #D0BCBC;
+    /*background-color: #D0BCBC;*/
     color: white;
     overflow: hidden;
     width: 100%;
@@ -270,8 +270,9 @@ body[data-page="privacyset"] #privacyModeBtn:hover {
 }
 
 #checkfiltering h3 {
-    font-size: 30px;
+    font-size: 25px;
     font-weight: bold; /* 글자 굵기 조정 (선택사항) */
+    color : black;
 }
 
 .privacyset-box {
@@ -475,13 +476,10 @@ select#cameras {
 
 
 /* meeting.pug  */
-/* header */
-h1#meeting,
-h2#roomTitle
-{
-    text-align: center;
-    height: 30px;
+body.meeting-page {
+    background-color: #292424;  /* 회의 페이지 전용 배경색 */
 }
+
 
 /* 폼 위치 조정 */
 #welcome {
@@ -513,18 +511,17 @@ button {
 /*   닉네임   */
 /* 내 비디오 닉네임 */
 .nickname-container {
-    position: absolute;
-    top: 10px; /* 상단 여백 */
+    position: static;
+    top: 5px; /* 상단 여백 */
     left: 10px; /* 좌측 여백 */
-    color: black; /* 글자 색상 */
-    padding: 10px;
+    color: white; /* 글자 색상 */
+    padding: 3px;
     border-radius: 8px;
     font-size: inherit;
-    font-weight: bold;
     font-family: Arial;
     white-space: nowrap;
     z-index: 10;
-    background-color: rgba(255, 255, 255, 0.7); /* 배경색 추가 */
+    
 }
 
 /* 상대방 비디오 닉네임 */
@@ -532,7 +529,7 @@ button {
     position: absolute;
     top: 60px; /* 아래쪽 여백 */
     align-items: center;
-    color: black; /* 글자 색상 */
+    color: white; /* 글자 색상 */
     padding: 10px 10px;
     border-radius: 8px;
     font-size: inherit;
@@ -554,18 +551,20 @@ button {
 
 /* 비디오 컨테이너 스타일 */
 #call_meeting {
+    position: relative;
     display: flex;
-    flex-direction: row; /* 가로 정렬 */
+    flex-direction: column; /* 가로 정렬 */
     flex-wrap: wrap; /* 줄 바꿈 */
     justify-content: center; /* 가로 중앙 정렬 */
-    align-items: flex-start; /* 세로 상단 정렬 */
-    /*width:60%;*/
-    padding-top: 100px; /* 헤더와 겹치지 않도록 여백 */
+    align-items: center; 
+    padding-top: 60px; /* 헤더와 겹치지 않도록 여백 */
     padding-bottom: 100px; /* 하단바와 겹치지 않도록 여백 */
-    margin: 0 auto; /* 가로 중앙 정렬 */
+    
     gap: 20px; /* 스트림 간 간격 */
-    /*min-height: calc(100vh - 160px); /* 전체 높이에서 헤더, 푸터 제외 */
+    height: calc(100vh - 100px); 
     box-sizing: border-box;
+    transition: all 0.3s ease;
+    
 }    
 
 /* #call_meeting 활성화 시 표시 */
@@ -578,6 +577,7 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap:5px;
     justify-content: flex-start;
     width: 80%;
     height: 80%;
@@ -594,7 +594,53 @@ video {
     border-radius: 5px;
     margin-top: 40px; /* 닉네임과 겹치지 않도록 여백 */
 }
+.video-wrapper {
+    aspect-ratio: 4 / 3;
+    width: 60%;
+    max-width: 480px;  /* 선택: 너무 커지지 않도록 제한 */
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: width 0.3s ease;
+}
 
+.video-wrapper video,
+.video-wrapper canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+/* peer 있을 때 */
+/* 상대방 있을 때: 위아래로 두 개 비디오 표시 */
+#call_meeting.peer-active {
+    justify-content: space-evenly;
+}
+
+/* 상대방 들어오면 비디오 크기 작게 */
+#call_meeting.peer-active .video-wrapper {
+    width: 40%;
+    max-width: 360px;
+}
+
+
+
+
+/* roomtitle */
+h2#roomTitle {
+    text-align: left;
+    position: absolute;
+    bottom: 100px; /* bottomBar 높이만큼 위로 */
+    left: 5px;
+    font-size:inherit;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    color: white;
+}
 
 /* 하단 바 */
 /* 하단바 스타일 */
@@ -608,7 +654,7 @@ video {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 15px 10px;
+    padding: 0px 10px;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
     z-index: 999; /* 화면 위로 오도록 */
 }
