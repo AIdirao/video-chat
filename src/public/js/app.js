@@ -50,7 +50,7 @@ let nsfwModel = null;
 const nsfwCategories = ["porn", "sexy", "hentai"];
 const nsfwThresholds = { 
     porn: 0.9, 
-    sexy: 0.1,
+    sexy: 0.2,
     hentai: 0.3,  
 };
 
