@@ -554,13 +554,13 @@ button {
     position: relative;
     display: flex;
     flex-direction: column; /* 가로 정렬 */
-    flex-wrap: wrap; /* 줄 바꿈 */
+    flex-wrap: nowrap; /* 줄 바꿈 */
     justify-content: center; /* 가로 중앙 정렬 */
     align-items: center; 
     padding-top: 60px; /* 헤더와 겹치지 않도록 여백 */
     padding-bottom: 100px; /* 하단바와 겹치지 않도록 여백 */
     
-    gap: 20px; /* 스트림 간 간격 */
+    gap: 10px; /* 스트림 간 간격 */
     height: calc(100vh - 100px); 
     box-sizing: border-box;
     transition: all 0.3s ease;
@@ -577,7 +577,7 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap:5px;
+    /*gap:5px;*/
     justify-content: flex-start;
     width: 80%;
     height: 80%;
