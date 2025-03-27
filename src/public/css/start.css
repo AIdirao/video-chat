@@ -510,38 +510,20 @@ button {
 
 /*   닉네임   */
 /* 내 비디오 닉네임 */
-.nickname-container {
-    position: static;
-    top: 5px; /* 상단 여백 */
-    left: 10px; /* 좌측 여백 */
-    color: white; /* 글자 색상 */
-    padding: 3px;
-    border-radius: 8px;
-    font-size: inherit;
+.nickname-container,
+.peer-nickname-container {
+    position: static;        /* ✅ 더 이상 absolute 아님 */
+    margin-top: 10px;        /* ✅ 비디오 아래 여백 */
+    color: white;
+    font-size: 16px;
     font-family: Arial;
-    white-space: nowrap;
+    text-align: center;
     z-index: 10;
-    
 }
 
 /* 상대방 비디오 닉네임 */
-.peer-nickname-container {
-    position: absolute;
-    top: 60px; /* 아래쪽 여백 */
-    align-items: center;
-    color: white; /* 글자 색상 */
-    padding: 10px 10px;
-    border-radius: 8px;
-    font-size: inherit;
-    font-weight: bold;
-    white-space: nowrap;
-    z-index: 10;
-}
 #peerNickname {
     display: none; /* 기본적으로 숨김 */
-    font-size: inherit;
-    font-weight: bold;
-    color: #333;
 }
 
 .peer-active #peerNickname {
@@ -557,11 +539,7 @@ button {
     flex-wrap: nowrap; /* 줄 바꿈 */
     justify-content: center; /* 가로 중앙 정렬 */
     align-items: center; 
-    padding-top: 60px; /* 헤더와 겹치지 않도록 여백 */
-    padding-bottom: 100px; /* 하단바와 겹치지 않도록 여백 */
-    
-    gap: 10px; /* 스트림 간 간격 */
-    height: calc(100vh - 100px); 
+    height: calc(100dvh - 70px);
     box-sizing: border-box;
     transition: all 0.3s ease;
     
@@ -572,21 +550,37 @@ button {
     display: flex;
 }
 
+
 /* 각 스트림을 동일한 크기로 설정 */
-#myStream, #peerStream {
+#myStream{
     display: flex;
     flex-direction: column;
     align-items: center;
     /*gap:5px;*/
     justify-content: flex-start;
-    width: 80%;
-    height: 80%;
+    width: 60%;
+    height: auto;
     padding: 10px;
     border-radius: 10px;
     position: relative;
     flex-grow: 0;
     overflow: hidden;
 }
+#peerStream {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    
+    width: 60%;
+    height: auto;
+    padding: 10px;
+    border-radius: 10px;
+    position: relative;
+    flex-grow: 0;
+    overflow: hidden;
+}
+
 
 /* 비디오 스타일 */
 video {
@@ -596,10 +590,10 @@ video {
 }
 .video-wrapper {
     aspect-ratio: 4 / 3;
-    width: 60%;
+    width: 40%;
     max-width: 480px;  /* 선택: 너무 커지지 않도록 제한 */
+    height:auto;
     position: relative;
-    border-radius: 10px;
     overflow: hidden;
     transition: width 0.3s ease;
 }
@@ -618,14 +612,10 @@ video {
 /* peer 있을 때 */
 /* 상대방 있을 때: 위아래로 두 개 비디오 표시 */
 #call_meeting.peer-active {
-    justify-content: space-evenly;
+    justify-content: flex-start;
 }
 
 /* 상대방 들어오면 비디오 크기 작게 */
-#call_meeting.peer-active .video-wrapper {
-    width: 40%;
-    max-width: 360px;
-}
 
 
 
@@ -633,8 +623,8 @@ video {
 /* roomtitle */
 h2#roomTitle {
     text-align: left;
-    position: absolute;
-    bottom: 100px; /* bottomBar 높이만큼 위로 */
+    position: fixed;
+    bottom: 80px; /* bottomBar 높이만큼 위로 */
     left: 5px;
     font-size:inherit;
     margin-bottom: 10px;
