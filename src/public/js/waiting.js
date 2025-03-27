@@ -34,8 +34,8 @@ const nsfwOffscreenCtx = nsfwOffscreenCanvas.getContext("2d");
 let nsfwModel = null;
 const nsfwCategories = ["porn", "sexy", "hentai"];
 const nsfwThresholds = { 
-    porn: 0.9, 
-    sexy: 0.1,
+    porn: 0.8, 
+    sexy: 0.2,
     hentai: 0.3,  
 };
 
